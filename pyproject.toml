@@ -1,0 +1,28 @@
+[project]
+name = "cheapfuel"
+version = "1.0.0"
+description = "Find the cheapest gas stations near you"
+authors = [
+    {name = "CheapFuel Team"}
+]
+requires-python = ">=3.8"
+dependencies = [
+    "Flask>=3.0.0",
+    "Flask-CORS>=4.0.0",
+    "Flask-SQLAlchemy>=3.1.1",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
+    "PyJWT>=2.8.0",
+    "Werkzeug>=3.0.1"
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["backend"]
