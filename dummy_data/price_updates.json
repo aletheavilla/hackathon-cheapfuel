@@ -1,0 +1,703 @@
+[
+  {
+    "id": 1,
+    "station_id": 1,
+    "fuel_type": "Regular",
+    "price": 55.80,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 2,
+    "station_id": 1,
+    "fuel_type": "Premium",
+    "price": 66.20,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 3,
+    "station_id": 1,
+    "fuel_type": "Diesel",
+    "price": 52.60,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 4,
+    "station_id": 2,
+    "fuel_type": "Regular",
+    "price": 54.90,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 5,
+    "station_id": 2,
+    "fuel_type": "Premium",
+    "price": 65.30,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 6,
+    "station_id": 2,
+    "fuel_type": "Diesel",
+    "price": 51.80,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 7,
+    "station_id": 3,
+    "fuel_type": "Regular",
+    "price": 56.20,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 8,
+    "station_id": 3,
+    "fuel_type": "Premium",
+    "price": 67.00,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 9,
+    "station_id": 3,
+    "fuel_type": "Diesel",
+    "price": 53.10,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 10,
+    "station_id": 4,
+    "fuel_type": "Regular",
+    "price": 55.50,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 11,
+    "station_id": 4,
+    "fuel_type": "Premium",
+    "price": 65.80,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 12,
+    "station_id": 4,
+    "fuel_type": "Diesel",
+    "price": 52.30,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 13,
+    "station_id": 5,
+    "fuel_type": "Regular",
+    "price": 55.10,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 14,
+    "station_id": 5,
+    "fuel_type": "Premium",
+    "price": 65.40,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 15,
+    "station_id": 5,
+    "fuel_type": "Diesel",
+    "price": 51.90,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 16,
+    "station_id": 6,
+    "fuel_type": "Regular",
+    "price": 53.80,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 17,
+    "station_id": 6,
+    "fuel_type": "Premium",
+    "price": 64.20,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 18,
+    "station_id": 6,
+    "fuel_type": "Diesel",
+    "price": 50.60,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 19,
+    "station_id": 7,
+    "fuel_type": "Regular",
+    "price": 54.20,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 20,
+    "station_id": 7,
+    "fuel_type": "Premium",
+    "price": 64.50,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 21,
+    "station_id": 7,
+    "fuel_type": "Diesel",
+    "price": 51.10,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 22,
+    "station_id": 8,
+    "fuel_type": "Regular",
+    "price": 55.60,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 23,
+    "station_id": 8,
+    "fuel_type": "Premium",
+    "price": 66.10,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 24,
+    "station_id": 8,
+    "fuel_type": "Diesel",
+    "price": 52.50,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 25,
+    "station_id": 9,
+    "fuel_type": "Regular",
+    "price": 54.70,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 26,
+    "station_id": 9,
+    "fuel_type": "Premium",
+    "price": 65.10,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 27,
+    "station_id": 9,
+    "fuel_type": "Diesel",
+    "price": 51.60,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 28,
+    "station_id": 10,
+    "fuel_type": "Regular",
+    "price": 56.00,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 29,
+    "station_id": 10,
+    "fuel_type": "Premium",
+    "price": 66.80,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 30,
+    "station_id": 10,
+    "fuel_type": "Diesel",
+    "price": 52.90,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 31,
+    "station_id": 11,
+    "fuel_type": "Regular",
+    "price": 55.40,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 32,
+    "station_id": 11,
+    "fuel_type": "Premium",
+    "price": 65.70,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 33,
+    "station_id": 11,
+    "fuel_type": "Diesel",
+    "price": 52.20,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 34,
+    "station_id": 12,
+    "fuel_type": "Regular",
+    "price": 54.50,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 35,
+    "station_id": 12,
+    "fuel_type": "Premium",
+    "price": 64.90,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 36,
+    "station_id": 12,
+    "fuel_type": "Diesel",
+    "price": 51.40,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 37,
+    "station_id": 13,
+    "fuel_type": "Regular",
+    "price": 53.50,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 38,
+    "station_id": 13,
+    "fuel_type": "Premium",
+    "price": 63.90,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 39,
+    "station_id": 13,
+    "fuel_type": "Diesel",
+    "price": 50.30,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 40,
+    "station_id": 14,
+    "fuel_type": "Regular",
+    "price": 54.10,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 41,
+    "station_id": 14,
+    "fuel_type": "Premium",
+    "price": 64.40,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 42,
+    "station_id": 14,
+    "fuel_type": "Diesel",
+    "price": 51.00,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 43,
+    "station_id": 15,
+    "fuel_type": "Regular",
+    "price": 55.90,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 44,
+    "station_id": 15,
+    "fuel_type": "Premium",
+    "price": 66.50,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 45,
+    "station_id": 15,
+    "fuel_type": "Diesel",
+    "price": 52.70,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 46,
+    "station_id": 16,
+    "fuel_type": "Regular",
+    "price": 55.30,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 47,
+    "station_id": 16,
+    "fuel_type": "Premium",
+    "price": 65.60,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 48,
+    "station_id": 16,
+    "fuel_type": "Diesel",
+    "price": 52.10,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 49,
+    "station_id": 17,
+    "fuel_type": "Regular",
+    "price": 54.80,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 50,
+    "station_id": 17,
+    "fuel_type": "Premium",
+    "price": 65.20,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 51,
+    "station_id": 17,
+    "fuel_type": "Diesel",
+    "price": 51.70,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 52,
+    "station_id": 18,
+    "fuel_type": "Regular",
+    "price": 53.60,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 53,
+    "station_id": 18,
+    "fuel_type": "Premium",
+    "price": 64.00,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 54,
+    "station_id": 18,
+    "fuel_type": "Diesel",
+    "price": 50.40,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 55,
+    "station_id": 19,
+    "fuel_type": "Regular",
+    "price": 54.00,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 56,
+    "station_id": 19,
+    "fuel_type": "Premium",
+    "price": 64.30,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 57,
+    "station_id": 19,
+    "fuel_type": "Diesel",
+    "price": 50.90,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 58,
+    "station_id": 20,
+    "fuel_type": "Regular",
+    "price": 55.70,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 59,
+    "station_id": 20,
+    "fuel_type": "Premium",
+    "price": 66.30,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 60,
+    "station_id": 20,
+    "fuel_type": "Diesel",
+    "price": 52.40,
+    "source": "DOE",
+    "user_id": null,
+    "updated_at": "2024-10-20T08:00:00",
+    "verified": false
+  },
+  {
+    "id": 61,
+    "station_id": 1,
+    "fuel_type": "Regular",
+    "price": 54.90,
+    "source": "USER",
+    "user_id": 1,
+    "updated_at": "2024-10-24T09:30:00",
+    "verified": false
+  },
+  {
+    "id": 62,
+    "station_id": 2,
+    "fuel_type": "Premium",
+    "price": 64.50,
+    "source": "USER",
+    "user_id": 2,
+    "updated_at": "2024-10-24T10:15:00",
+    "verified": false
+  },
+  {
+    "id": 63,
+    "station_id": 3,
+    "fuel_type": "Diesel",
+    "price": 52.20,
+    "source": "USER",
+    "user_id": 3,
+    "updated_at": "2024-10-24T11:00:00",
+    "verified": false
+  },
+  {
+    "id": 64,
+    "station_id": 4,
+    "fuel_type": "Regular",
+    "price": 54.80,
+    "source": "USER",
+    "user_id": 6,
+    "updated_at": "2024-10-24T12:30:00",
+    "verified": false
+  },
+  {
+    "id": 65,
+    "station_id": 5,
+    "fuel_type": "Premium",
+    "price": 64.90,
+    "source": "USER",
+    "user_id": 4,
+    "updated_at": "2024-10-24T13:45:00",
+    "verified": false
+  },
+  {
+    "id": 66,
+    "station_id": 6,
+    "fuel_type": "Regular",
+    "price": 53.20,
+    "source": "USER",
+    "user_id": 7,
+    "updated_at": "2024-10-24T14:20:00",
+    "verified": false
+  },
+  {
+    "id": 67,
+    "station_id": 7,
+    "fuel_type": "Diesel",
+    "price": 50.80,
+    "source": "USER",
+    "user_id": 5,
+    "updated_at": "2024-10-24T15:10:00",
+    "verified": false
+  },
+  {
+    "id": 68,
+    "station_id": 8,
+    "fuel_type": "Regular",
+    "price": 55.00,
+    "source": "USER",
+    "user_id": 8,
+    "updated_at": "2024-10-24T16:00:00",
+    "verified": false
+  },
+  {
+    "id": 69,
+    "station_id": 9,
+    "fuel_type": "Premium",
+    "price": 64.60,
+    "source": "USER",
+    "user_id": 10,
+    "updated_at": "2024-10-24T16:45:00",
+    "verified": false
+  },
+  {
+    "id": 70,
+    "station_id": 10,
+    "fuel_type": "Diesel",
+    "price": 52.00,
+    "source": "USER",
+    "user_id": 9,
+    "updated_at": "2024-10-24T17:30:00",
+    "verified": false
+  }
+]
+

@@ -1,0 +1,203 @@
+[
+  {
+    "id": 1,
+    "place_id": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+    "name": "Shell EDSA Guadalupe",
+    "address": "1200 EDSA, Guadalupe, Makati City",
+    "latitude": 14.5639,
+    "longitude": 121.0431,
+    "brand": "Shell",
+    "created_at": "2024-10-01T10:00:00"
+  },
+  {
+    "id": 2,
+    "place_id": "ChIJ3xAq1YyuEmsRgH4VH_8aULk",
+    "name": "Petron Buendia Station",
+    "address": "Sen. Gil Puyat Avenue, Makati City",
+    "latitude": 14.5623,
+    "longitude": 121.0161,
+    "brand": "Petron",
+    "created_at": "2024-10-01T10:00:00"
+  },
+  {
+    "id": 3,
+    "place_id": "ChIJQUvFZPetEmsRkXF0bPJ5kgA",
+    "name": "Caltex Ayala Avenue",
+    "address": "Ayala Avenue corner Makati Avenue, Makati City",
+    "latitude": 14.5547,
+    "longitude": 121.0244,
+    "brand": "Caltex",
+    "created_at": "2024-10-01T10:00:00"
+  },
+  {
+    "id": 4,
+    "place_id": "ChIJR1wbfCatEmsRHx4VPZWwgko",
+    "name": "Shell BGC High Street",
+    "address": "7th Avenue, BGC, Taguig City",
+    "latitude": 14.5510,
+    "longitude": 121.0505,
+    "brand": "Shell",
+    "created_at": "2024-10-02T11:00:00"
+  },
+  {
+    "id": 5,
+    "place_id": "ChIJ8UBKxgetEmsRBH4VH_8aULk",
+    "name": "Petron Rockwell Center",
+    "address": "Rockwell Drive, Makati City",
+    "latitude": 14.5650,
+    "longitude": 121.0385,
+    "brand": "Petron",
+    "created_at": "2024-10-02T11:00:00"
+  },
+  {
+    "id": 6,
+    "place_id": "ChIJ3SY6ZfCtEmsRVWX8gQdH4hI",
+    "name": "Seaoil EDSA Pasay",
+    "address": "EDSA corner Taft Avenue, Pasay City",
+    "latitude": 14.5389,
+    "longitude": 121.0023,
+    "brand": "Seaoil",
+    "created_at": "2024-10-03T09:30:00"
+  },
+  {
+    "id": 7,
+    "place_id": "ChIJmWLBfWWtEmsRpWX8gQdH4hI",
+    "name": "Phoenix Quezon Avenue",
+    "address": "Quezon Avenue, Quezon City",
+    "latitude": 14.6298,
+    "longitude": 121.0363,
+    "brand": "Phoenix",
+    "created_at": "2024-10-03T09:30:00"
+  },
+  {
+    "id": 8,
+    "place_id": "ChIJ8TBJfCWtEmsRfSY8gQdH4hI",
+    "name": "Shell Commonwealth Avenue",
+    "address": "Commonwealth Avenue, Quezon City",
+    "latitude": 14.6758,
+    "longitude": 121.0545,
+    "brand": "Shell",
+    "created_at": "2024-10-04T14:00:00"
+  },
+  {
+    "id": 9,
+    "place_id": "ChIJ9VZMfCWtEmsRxWX8gQdH4hI",
+    "name": "Petron Shaw Boulevard",
+    "address": "Shaw Boulevard, Mandaluyong City",
+    "latitude": 14.5822,
+    "longitude": 121.0523,
+    "brand": "Petron",
+    "created_at": "2024-10-04T14:00:00"
+  },
+  {
+    "id": 10,
+    "place_id": "ChIJ1XYJfCWtEmsRaWX8gQdH4hI",
+    "name": "Caltex Ortigas Avenue",
+    "address": "Ortigas Avenue, Pasig City",
+    "latitude": 14.5867,
+    "longitude": 121.0611,
+    "brand": "Caltex",
+    "created_at": "2024-10-05T15:30:00"
+  },
+  {
+    "id": 11,
+    "place_id": "ChIJ2YZKfCWtEmsRbWX8gQdH4hI",
+    "name": "Shell C5 Road",
+    "address": "C5 Road, Taguig City",
+    "latitude": 14.5332,
+    "longitude": 121.0686,
+    "brand": "Shell",
+    "created_at": "2024-10-05T15:30:00"
+  },
+  {
+    "id": 12,
+    "place_id": "ChIJ3ZaLfCWtEmsRcWX8gQdH4hI",
+    "name": "Petron SLEX Magallanes",
+    "address": "SLEX Magallanes Interchange, Makati City",
+    "latitude": 14.5467,
+    "longitude": 121.0174,
+    "brand": "Petron",
+    "created_at": "2024-10-06T12:00:00"
+  },
+  {
+    "id": 13,
+    "place_id": "ChIJ4abMfCWtEmsRdWX8gQdH4hI",
+    "name": "Seaoil Quirino Avenue",
+    "address": "Quirino Avenue, Paranaque City",
+    "latitude": 14.4978,
+    "longitude": 121.0136,
+    "brand": "Seaoil",
+    "created_at": "2024-10-07T10:00:00"
+  },
+  {
+    "id": 14,
+    "place_id": "ChIJ5bcNfCWtEmsReWX8gQdH4hI",
+    "name": "Phoenix NAIA Road",
+    "address": "NAIA Road, Paranaque City",
+    "latitude": 14.5086,
+    "longitude": 121.0111,
+    "brand": "Phoenix",
+    "created_at": "2024-10-08T11:00:00"
+  },
+  {
+    "id": 15,
+    "place_id": "ChIJ6cdOfCWtEmsRfWX8gQdH4hI",
+    "name": "Caltex España Boulevard",
+    "address": "España Boulevard, Manila",
+    "latitude": 14.6089,
+    "longitude": 120.9922,
+    "brand": "Caltex",
+    "created_at": "2024-10-09T13:00:00"
+  },
+  {
+    "id": 16,
+    "place_id": "ChIJ7dePfCWtEmsRgWX8gQdH4hI",
+    "name": "Shell Marcos Highway",
+    "address": "Marcos Highway, Antipolo City",
+    "latitude": 14.6223,
+    "longitude": 121.1235,
+    "brand": "Shell",
+    "created_at": "2024-10-10T14:00:00"
+  },
+  {
+    "id": 17,
+    "place_id": "ChIJ8efQfCWtEmsRhWX8gQdH4hI",
+    "name": "Petron Katipunan Avenue",
+    "address": "Katipunan Avenue, Quezon City",
+    "latitude": 14.6389,
+    "longitude": 121.0742,
+    "brand": "Petron",
+    "created_at": "2024-10-11T09:00:00"
+  },
+  {
+    "id": 18,
+    "place_id": "ChIJ9fgRfCWtEmsRiWX8gQdH4hI",
+    "name": "Seaoil Alabang-Zapote Road",
+    "address": "Alabang-Zapote Road, Muntinlupa City",
+    "latitude": 14.4289,
+    "longitude": 121.0245,
+    "brand": "Seaoil",
+    "created_at": "2024-10-12T10:00:00"
+  },
+  {
+    "id": 19,
+    "place_id": "ChIJ0ghSfCWtEmsRjWX8gQdH4hI",
+    "name": "Phoenix Sucat Road",
+    "address": "Sucat Road, Paranaque City",
+    "latitude": 14.4567,
+    "longitude": 121.0342,
+    "brand": "Phoenix",
+    "created_at": "2024-10-13T11:00:00"
+  },
+  {
+    "id": 20,
+    "place_id": "ChIJ1hiTfCWtEmsRkWX8gQdH4hI",
+    "name": "Shell Macapagal Boulevard",
+    "address": "Macapagal Boulevard, Pasay City",
+    "latitude": 14.5267,
+    "longitude": 120.9856,
+    "brand": "Shell",
+    "created_at": "2024-10-14T12:00:00"
+  }
+]
+
