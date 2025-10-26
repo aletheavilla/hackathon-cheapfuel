@@ -10,7 +10,6 @@ import jwt
 from functools import wraps
 from typing import List, Dict, Tuple
 from dotenv import load_dotenv
-from openai import OpenAI
 
 load_dotenv()
 
@@ -30,10 +29,8 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    car_make = db.Column(db.String(100))  # e.g., Toyota, Honda, Ford
-    car_model = db.Column(db.String(100))  # e.g., Corolla, Civic, F-150
+    car_model = db.Column(db.String(100))
     fuel_type = db.Column(db.String(50))  # Regular, Premium, Diesel
-    fuel_consumption = db.Column(db.Float)  # Estimated consumption in km/l
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class GasStation(db.Model):
@@ -220,10 +217,8 @@ def register():
         email=data['email'],
         password_hash=generate_password_hash(data['password']),
         name=data['name'],
-        car_make=data.get('car_make'),
         car_model=data.get('car_model'),
-        fuel_type=data.get('fuel_type', 'Regular'),
-        fuel_consumption=data.get('fuel_consumption')
+        fuel_type=data.get('fuel_type', 'Regular')
     )
     
     db.session.add(user)
@@ -241,10 +236,8 @@ def register():
             'id': user.id,
             'email': user.email,
             'name': user.name,
-            'car_make': user.car_make,
             'car_model': user.car_model,
-            'fuel_type': user.fuel_type,
-            'fuel_consumption': user.fuel_consumption
+            'fuel_type': user.fuel_type
         }
     }), 201
 
@@ -271,10 +264,8 @@ def login():
             'id': user.id,
             'email': user.email,
             'name': user.name,
-            'car_make': user.car_make,
             'car_model': user.car_model,
-            'fuel_type': user.fuel_type,
-            'fuel_consumption': user.fuel_consumption
+            'fuel_type': user.fuel_type
         }
     })
 
@@ -285,10 +276,8 @@ def get_profile(current_user):
         'id': current_user.id,
         'email': current_user.email,
         'name': current_user.name,
-        'car_make': current_user.car_make,
         'car_model': current_user.car_model,
-        'fuel_type': current_user.fuel_type,
-        'fuel_consumption': current_user.fuel_consumption
+        'fuel_type': current_user.fuel_type
     })
 
 @app.route('/api/profile', methods=['PUT'])
@@ -298,14 +287,10 @@ def update_profile(current_user):
     
     if data.get('name'):
         current_user.name = data['name']
-    if data.get('car_make') is not None:
-        current_user.car_make = data['car_make']
-    if data.get('car_model') is not None:
+    if data.get('car_model'):
         current_user.car_model = data['car_model']
     if data.get('fuel_type'):
         current_user.fuel_type = data['fuel_type']
-    if data.get('fuel_consumption') is not None:
-        current_user.fuel_consumption = data['fuel_consumption']
     
     db.session.commit()
     
@@ -315,21 +300,14 @@ def update_profile(current_user):
             'id': current_user.id,
             'email': current_user.email,
             'name': current_user.name,
-            'car_make': current_user.car_make,
             'car_model': current_user.car_model,
-            'fuel_type': current_user.fuel_type,
-            'fuel_consumption': current_user.fuel_consumption
+            'fuel_type': current_user.fuel_type
         }
     })
 
 @app.route('/api/stations/search', methods=['POST'])
 @token_required
 def search_stations(current_user):
-    """Search for nearby gas stations - returns dummy data"""
-    import json
-    import random
-    import os
-    
     data = request.get_json()
     
     lat = data.get('latitude')
@@ -341,72 +319,53 @@ def search_stations(current_user):
     if not lat or not lng:
         return jsonify({'message': 'Location required'}), 400
     
-    # Load dummy data from JSON files
-    dummy_data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dummy_data')
-    
-    with open(os.path.join(dummy_data_path, 'gas_stations.json'), 'r') as f:
-        gas_stations = json.load(f)
-    
-    with open(os.path.join(dummy_data_path, 'price_updates.json'), 'r') as f:
-        price_updates = json.load(f)
-    
-    with open(os.path.join(dummy_data_path, 'users.json'), 'r') as f:
-        users = json.load(f)
-    
-    # Randomly select 5-10 stations
-    num_stations = random.randint(5, min(10, len(gas_stations)))
-    selected_stations = random.sample(gas_stations, num_stations)
+    # Fetch nearby stations from Google Maps
+    google_stations = fetch_nearby_gas_stations(lat, lng, radius)
     
     results = []
     
-    for station in selected_stations:
-        # Get prices for this station that match the requested fuel type
-        station_prices = [p for p in price_updates 
-                         if p['station_id'] == station['id'] and p['fuel_type'] == fuel_type]
+    for gs in google_stations:
+        # Check if station exists in our database
+        station = GasStation.query.filter_by(place_id=gs['place_id']).first()
         
-        if not station_prices:
-            continue
+        if not station:
+            # Add new station to database
+            station = GasStation(
+                place_id=gs['place_id'],
+                name=gs.get('name', 'Unknown Station'),
+                address=gs.get('vicinity', ''),
+                latitude=gs['geometry']['location']['lat'],
+                longitude=gs['geometry']['location']['lng'],
+                brand=gs.get('name', '').split()[0]  # First word as brand
+            )
+            db.session.add(station)
+            db.session.commit()
         
-        # Select the most recent price (either DOE or USER)
-        # Prefer USER prices if available
-        user_prices = [p for p in station_prices if p['source'] == 'USER']
-        price_info = random.choice(user_prices) if user_prices else station_prices[0]
+        # Get distance and duration
+        distance_km, duration_min = get_distance_and_duration(
+            lat, lng, station.latitude, station.longitude
+        )
         
-        # Calculate random distance and duration (simulating proximity to user location)
-        # Distance between 0.5 km and 8 km
-        distance_km = round(random.uniform(0.5, 8.0), 2)
-        # Duration roughly correlates with distance (assume 30-40 km/h average speed in city)
-        duration_min = int(distance_km * random.uniform(1.5, 2.5))
+        # Get latest price
+        price_info = get_latest_price(station.id, fuel_type)
         
-        # Get user info if price was submitted by a user
-        user_name = None
-        if price_info.get('user_id'):
-            user = next((u for u in users if u['id'] == price_info['user_id']), None)
-            if user:
-                user_name = user['name']
-        
-        # Random rating between 3.5 and 5.0
-        rating = round(random.uniform(3.5, 5.0), 1)
-        user_ratings_total = random.randint(50, 500)
-        
-        results.append({
-            'id': station['id'],
-            'place_id': station['place_id'],
-            'name': station['name'],
-            'address': station['address'],
-            'latitude': station['latitude'],
-            'longitude': station['longitude'],
-            'brand': station['brand'],
-            'distance_km': distance_km,
-            'duration_min': duration_min,
-            'price': price_info['price'],
-            'price_source': price_info['source'],
-            'price_updated_at': price_info['updated_at'],
-            'price_user_id': price_info.get('user_id'),
-            'price_user_name': user_name,
-            'rating': rating,
-            'user_ratings_total': user_ratings_total
-        })
+        if price_info:
+            results.append({
+                'id': station.id,
+                'place_id': station.place_id,
+                'name': station.name,
+                'address': station.address,
+                'latitude': station.latitude,
+                'longitude': station.longitude,
+                'brand': station.brand,
+                'distance_km': round(distance_km, 2),
+                'duration_min': duration_min,
+                'price': price_info['price'],
+                'price_source': price_info['source'],
+                'price_updated_at': price_info['updated_at'],
+                'rating': gs.get('rating'),
+                'user_ratings_total': gs.get('user_ratings_total', 0)
+            })
     
     # Sort based on priority
     if priority == 'price':
@@ -478,37 +437,11 @@ def update_price(current_user, station_id):
 @app.route('/api/stations/<int:station_id>/navigate', methods=['GET'])
 @token_required
 def navigate_to_station(current_user, station_id):
-    import json
-    import os
-    
-    # First check database
     station = GasStation.query.get(station_id)
-    
-    # If not in database, check dummy data
     if not station:
-        dummy_data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dummy_data')
-        with open(os.path.join(dummy_data_path, 'gas_stations.json'), 'r') as f:
-            gas_stations = json.load(f)
-        
-        station_data = next((s for s in gas_stations if s['id'] == station_id), None)
-        
-        if not station_data:
-            return jsonify({'message': 'Station not found'}), 404
-        
-        # Generate Google Maps navigation URL using dummy data
-        nav_url = f"https://www.google.com/maps/dir/?api=1&destination={station_data['latitude']},{station_data['longitude']}"
-        
-        return jsonify({
-            'navigation_url': nav_url,
-            'station': {
-                'name': station_data['name'],
-                'address': station_data['address'],
-                'latitude': station_data['latitude'],
-                'longitude': station_data['longitude']
-            }
-        })
+        return jsonify({'message': 'Station not found'}), 404
     
-    # Generate Google Maps navigation URL from database
+    # Generate Google Maps navigation URL
     nav_url = f"https://www.google.com/maps/dir/?api=1&destination={station.latitude},{station.longitude}"
     
     return jsonify({
@@ -562,78 +495,6 @@ def seed_prices():
     db.session.commit()
     
     return jsonify({'message': 'Prices seeded successfully'})
-
-@app.route('/api/stations/recommendation', methods=['POST'])
-@token_required
-def get_recommendation(current_user):
-    """Get GPT-4 recommendation for the cheapest gas station"""
-    data = request.get_json()
-    
-    stations = data.get('stations', [])
-    fuel_type = data.get('fuel_type', 'Regular')
-    
-    if not stations:
-        return jsonify({'message': 'No stations provided'}), 400
-    
-    # Find the cheapest station
-    cheapest_station = min(stations, key=lambda x: x['price'])
-    
-    # Initialize OpenAI client
-    openai_api_key = os.getenv('OPENAI_API_KEY') or os.getenv('OPEN_API_KEY')
-    
-    if not openai_api_key:
-        # Fallback message without GPT-4
-        return jsonify({
-            'recommendation': f"🎯 Best Deal: {cheapest_station['name']} offers the cheapest {fuel_type} at ₱{cheapest_station['price']:.2f}/liter, just {cheapest_station['distance_km']} km away!"
-        })
-    
-    try:
-        client = OpenAI(api_key=openai_api_key)
-        
-        # Create a prompt for GPT-4
-        prompt = f"""You are a helpful assistant for a gas price comparison app called CheapFuel. 
-Generate a friendly, enthusiastic recommendation message (2-3 sentences max) for the user.
-
-User's preferred fuel type: {fuel_type}
-Cheapest gas station found:
-- Name: {cheapest_station['name']}
-- Price: ₱{cheapest_station['price']:.2f} per liter
-- Distance: {cheapest_station['distance_km']} km away
-- Drive time: {cheapest_station['duration_min']} minutes
-- Address: {cheapest_station['address']}
-
-Write a personalized, engaging recommendation that highlights why this is a great choice. 
-Keep it concise and use emojis sparingly (max 1-2). Focus on the savings and convenience."""
-
-        # Call GPT-4
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant for a gas price app. Be friendly, concise, and enthusiastic."},
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=150,
-            temperature=0.7
-        )
-        
-        recommendation = response.choices[0].message.content.strip()
-        
-        return jsonify({
-            'recommendation': recommendation,
-            'cheapest_station': {
-                'id': cheapest_station['id'],
-                'name': cheapest_station['name'],
-                'price': cheapest_station['price'],
-                'distance_km': cheapest_station['distance_km']
-            }
-        })
-        
-    except Exception as e:
-        print(f"Error getting GPT-4 recommendation: {e}")
-        # Fallback to basic recommendation
-        return jsonify({
-            'recommendation': f"🎯 Best Deal: {cheapest_station['name']} offers the cheapest {fuel_type} at ₱{cheapest_station['price']:.2f}/liter, just {cheapest_station['distance_km']} km away!"
-        })
 
 @app.route('/api/health', methods=['GET'])
 def health_check():

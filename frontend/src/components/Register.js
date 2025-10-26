@@ -7,8 +7,10 @@ function Register({ onRegister }) {
     name: '',
     email: '',
     password: '',
+    car_make: '',
     car_model: '',
     fuel_type: 'Regular',
+    fuel_consumption: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -94,6 +96,18 @@ function Register({ onRegister }) {
           </div>
 
           <div className="form-group">
+            <label className="form-label">Car Make (Optional)</label>
+            <input
+              type="text"
+              name="car_make"
+              className="form-input"
+              value={formData.car_make}
+              onChange={handleChange}
+              placeholder="e.g., Toyota, Honda, Ford"
+            />
+          </div>
+
+          <div className="form-group">
             <label className="form-label">Car Model (Optional)</label>
             <input
               type="text"
@@ -101,7 +115,7 @@ function Register({ onRegister }) {
               className="form-input"
               value={formData.car_model}
               onChange={handleChange}
-              placeholder="Toyota Corolla"
+              placeholder="e.g., Corolla, Civic, F-150"
             />
           </div>
 
@@ -117,6 +131,20 @@ function Register({ onRegister }) {
               <option value="Premium">Premium</option>
               <option value="Diesel">Diesel</option>
             </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Estimated Fuel Consumption (km/l) (Optional)</label>
+            <input
+              type="number"
+              name="fuel_consumption"
+              className="form-input"
+              value={formData.fuel_consumption}
+              onChange={handleChange}
+              placeholder="e.g., 12.5"
+              step="0.1"
+              min="0"
+            />
           </div>
 
           <button type="submit" className="form-button" disabled={loading}>
