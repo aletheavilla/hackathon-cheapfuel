@@ -5,8 +5,10 @@ import { getProfile, updateProfile } from '../services/api';
 function Profile({ user, setUser, onLogout }) {
   const [formData, setFormData] = useState({
     name: user?.name || '',
+    car_make: user?.car_make || '',
     car_model: user?.car_model || '',
     fuel_type: user?.fuel_type || 'Regular',
+    fuel_consumption: user?.fuel_consumption || '',
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -101,6 +103,18 @@ function Profile({ user, setUser, onLogout }) {
             </div>
 
             <div className="form-group">
+              <label className="form-label">Car Make</label>
+              <input
+                type="text"
+                name="car_make"
+                className="form-input"
+                value={formData.car_make}
+                onChange={handleChange}
+                placeholder="e.g., Toyota, Honda, Ford"
+              />
+            </div>
+
+            <div className="form-group">
               <label className="form-label">Car Model</label>
               <input
                 type="text"
@@ -108,7 +122,7 @@ function Profile({ user, setUser, onLogout }) {
                 className="form-input"
                 value={formData.car_model}
                 onChange={handleChange}
-                placeholder="Toyota Corolla"
+                placeholder="e.g., Corolla, Civic, F-150"
               />
             </div>
 
@@ -124,6 +138,23 @@ function Profile({ user, setUser, onLogout }) {
                 <option value="Premium">Premium</option>
                 <option value="Diesel">Diesel</option>
               </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Estimated Fuel Consumption (km/l)</label>
+              <input
+                type="number"
+                name="fuel_consumption"
+                className="form-input"
+                value={formData.fuel_consumption}
+                onChange={handleChange}
+                placeholder="e.g., 12.5"
+                step="0.1"
+                min="0"
+              />
+              <small style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '4px', display: 'block' }}>
+                Enter your car's average fuel consumption in kilometers per liter
+              </small>
             </div>
 
             <button type="submit" className="form-button" disabled={loading}>

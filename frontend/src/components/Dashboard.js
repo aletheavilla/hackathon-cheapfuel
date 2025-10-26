@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { searchStations, getNavigationUrl, updateStationPrice } from '../services/api';
+import { searchStations, getNavigationUrl, updateStationPrice, getRecommendation } from '../services/api';
 
 function Dashboard({ user, onLogout }) {
   const [stations, setStations] = useState([]);
@@ -12,6 +12,9 @@ function Dashboard({ user, onLogout }) {
   const [selectedStation, setSelectedStation] = useState(null);
   const [priceUpdateModal, setPriceUpdateModal] = useState(false);
   const [newPrice, setNewPrice] = useState('');
+  const [showMapForStation, setShowMapForStation] = useState(null);
+  const [recommendation, setRecommendation] = useState('');
+  const [loadingRecommendation, setLoadingRecommendation] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,6 +67,11 @@ function Dashboard({ user, onLogout }) {
       });
 
       setStations(response.data.stations);
+      
+      // Fetch recommendation after stations are loaded
+      if (response.data.stations.length > 0) {
+        fetchRecommendation(response.data.stations, fuelType);
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch gas stations');
     } finally {
@@ -71,10 +79,30 @@ function Dashboard({ user, onLogout }) {
     }
   };
 
-  const handleNavigate = async (stationId) => {
+  const fetchRecommendation = async (stationsList, fuelTypeParam) => {
+    setLoadingRecommendation(true);
     try {
-      const response = await getNavigationUrl(stationId);
-      window.open(response.data.navigation_url, '_blank');
+      const response = await getRecommendation({
+        stations: stationsList,
+        fuel_type: fuelTypeParam
+      });
+      setRecommendation(response.data.recommendation);
+    } catch (err) {
+      console.error('Error fetching recommendation:', err);
+      // Don't show error to user, just skip recommendation
+    } finally {
+      setLoadingRecommendation(false);
+    }
+  };
+
+  const handleNavigate = async (station) => {
+    try {
+      // Toggle map visibility
+      if (showMapForStation === station.id) {
+        setShowMapForStation(null);
+      } else {
+        setShowMapForStation(station.id);
+      }
     } catch (err) {
       console.error('Error getting navigation URL:', err);
     }
@@ -90,16 +118,28 @@ function Dashboard({ user, onLogout }) {
     if (!selectedStation || !newPrice) return;
 
     try {
-      await updateStationPrice(selectedStation.id, {
+      const response = await updateStationPrice(selectedStation.id, {
         fuel_type: fuelType,
         price: parseFloat(newPrice),
       });
 
+      console.log('Price update response:', response);
       alert('Price updated successfully!');
+      
+      // Update the station price in the UI without refreshing
+      setStations(prevStations => 
+        prevStations.map(s => 
+          s.id === selectedStation.id 
+            ? { ...s, price: parseFloat(newPrice), price_source: 'USER' }
+            : s
+        )
+      );
+      
       setPriceUpdateModal(false);
-      handleSearch(); // Refresh the list
     } catch (err) {
-      alert('Failed to update price');
+      console.error('Error updating price:', err);
+      console.error('Error response:', err.response);
+      alert(`Failed to update price: ${err.response?.data?.message || err.message}`);
     }
   };
 
@@ -161,6 +201,48 @@ function Dashboard({ user, onLogout }) {
           </div>
         </div>
 
+        {/* Recommendation Section */}
+        {!loading && stations.length > 0 && (
+          <div style={{
+            backgroundColor: '#f0fdf4',
+            border: '2px solid #86efac',
+            borderRadius: '12px',
+            padding: '20px',
+            marginBottom: '24px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}>
+            <h3 style={{
+              margin: '0 0 12px 0',
+              color: '#166534',
+              fontSize: '18px',
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              💡 Recommendation
+            </h3>
+            {loadingRecommendation ? (
+              <div style={{
+                color: '#65a30d',
+                fontSize: '14px',
+                fontStyle: 'italic'
+              }}>
+                ⏳ Getting personalized recommendation...
+              </div>
+            ) : recommendation ? (
+              <p style={{
+                margin: 0,
+                color: '#166534',
+                fontSize: '16px',
+                lineHeight: '1.6'
+              }}>
+                {recommendation}
+              </p>
+            ) : null}
+          </div>
+        )}
+
         {error && <div className="error-message">{error}</div>}
 
         <div className="results-section">
@@ -217,9 +299,9 @@ function Dashboard({ user, onLogout }) {
                   <div className="station-actions">
                     <button
                       className="btn btn-primary"
-                      onClick={() => handleNavigate(station.id)}
+                      onClick={() => handleNavigate(station)}
                     >
-                      🗺️ Navigate
+                      {showMapForStation === station.id ? '❌ Close Map' : '🗺️ Navigate'}
                     </button>
                     <button
                       className="btn btn-secondary"
@@ -228,6 +310,28 @@ function Dashboard({ user, onLogout }) {
                       💵 Update Price
                     </button>
                   </div>
+
+                  {/* Embedded Map */}
+                  {showMapForStation === station.id && location && (
+                    <div style={{
+                      marginTop: '16px',
+                      width: '100%',
+                      height: '400px',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      border: '2px solid #e5e7eb'
+                    }}>
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        frameBorder="0"
+                        style={{ border: 0 }}
+                        src={`https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY'}&origin=${location.latitude},${location.longitude}&destination=${station.latitude},${station.longitude}&mode=driving`}
+                        allowFullScreen
+                        title={`Map to ${station.name}`}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

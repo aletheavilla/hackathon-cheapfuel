@@ -198,6 +198,156 @@
     "longitude": 120.9856,
     "brand": "Shell",
     "created_at": "2024-10-14T12:00:00"
+  },
+  {
+    "id": 21,
+    "place_id": "ChIJ2ijUfCWtEmsRlWX8gQdH4hI",
+    "name": "Caltex Paseo de Roxas",
+    "address": "Paseo de Roxas, Makati City",
+    "latitude": 14.5583,
+    "longitude": 121.0207,
+    "brand": "Caltex",
+    "created_at": "2024-10-15T08:00:00"
+  },
+  {
+    "id": 22,
+    "place_id": "ChIJ3jkVfCWtEmsRmWX8gQdH4hI",
+    "name": "Petron Makati Avenue",
+    "address": "Makati Avenue corner Jupiter Street, Makati City",
+    "latitude": 14.5565,
+    "longitude": 121.0291,
+    "brand": "Petron",
+    "created_at": "2024-10-15T08:30:00"
+  },
+  {
+    "id": 23,
+    "place_id": "ChIJ4klWfCWtEmsRnWX8gQdH4hI",
+    "name": "Shell Kalayaan Avenue",
+    "address": "Kalayaan Avenue, Makati City",
+    "latitude": 14.5501,
+    "longitude": 121.0337,
+    "brand": "Shell",
+    "created_at": "2024-10-15T09:00:00"
+  },
+  {
+    "id": 24,
+    "place_id": "ChIJ5lmXfCWtEmsRoWX8gQdH4hI",
+    "name": "Seaoil Chino Roces Avenue",
+    "address": "Chino Roces Avenue, Makati City",
+    "latitude": 14.5512,
+    "longitude": 121.0189,
+    "brand": "Seaoil",
+    "created_at": "2024-10-15T09:30:00"
+  },
+  {
+    "id": 25,
+    "place_id": "ChIJ6mnYfCWtEmsRpWX8gQdH4hI",
+    "name": "Phoenix Amorsolo Street",
+    "address": "Amorsolo Street, Makati City",
+    "latitude": 14.5595,
+    "longitude": 121.0228,
+    "brand": "Phoenix",
+    "created_at": "2024-10-15T10:00:00"
+  },
+  {
+    "id": 26,
+    "place_id": "ChIJ7noZfCWtEmsRqWX8gQdH4hI",
+    "name": "Caltex JP Rizal Avenue",
+    "address": "JP Rizal Avenue, Makati City",
+    "latitude": 14.5478,
+    "longitude": 121.0356,
+    "brand": "Caltex",
+    "created_at": "2024-10-15T10:30:00"
+  },
+  {
+    "id": 27,
+    "place_id": "ChIJ8opafCWtEmsRrWX8gQdH4hI",
+    "name": "Petron Dela Rosa Street",
+    "address": "Dela Rosa Street corner Salcedo Street, Makati City",
+    "latitude": 14.5558,
+    "longitude": 121.0234,
+    "brand": "Petron",
+    "created_at": "2024-10-15T11:00:00"
+  },
+  {
+    "id": 28,
+    "place_id": "ChIJ9pqbfCWtEmsRsWX8gQdH4hI",
+    "name": "Shell Gil Puyat Extension",
+    "address": "Gil Puyat Avenue Extension, Makati City",
+    "latitude": 14.5589,
+    "longitude": 121.0143,
+    "brand": "Shell",
+    "created_at": "2024-10-15T11:30:00"
+  },
+  {
+    "id": 29,
+    "place_id": "ChIJ0qrcfCWtEmsRtWX8gQdH4hI",
+    "name": "Seaoil Pasong Tamo",
+    "address": "Pasong Tamo Extension, Makati City",
+    "latitude": 14.5532,
+    "longitude": 121.0195,
+    "brand": "Seaoil",
+    "created_at": "2024-10-15T12:00:00"
+  },
+  {
+    "id": 30,
+    "place_id": "ChIJ1rsdfCWtEmsRuWX8gQdH4hI",
+    "name": "Phoenix Arnaiz Avenue",
+    "address": "Arnaiz Avenue (formerly Pasay Road), Makati City",
+    "latitude": 14.5543,
+    "longitude": 121.0178,
+    "brand": "Phoenix",
+    "created_at": "2024-10-15T12:30:00"
+  },
+  {
+    "id": 31,
+    "place_id": "ChIJ2stefCWtEmsRvWX8gQdH4hI",
+    "name": "Caltex Bel-Air",
+    "address": "Jupiter Street, Bel-Air, Makati City",
+    "latitude": 14.5612,
+    "longitude": 121.0312,
+    "brand": "Caltex",
+    "created_at": "2024-10-15T13:00:00"
+  },
+  {
+    "id": 32,
+    "place_id": "ChIJ3tuffCWtEmsRwWX8gQdH4hI",
+    "name": "Petron Osmena Highway",
+    "address": "Osmena Highway, Makati City",
+    "latitude": 14.5601,
+    "longitude": 121.0098,
+    "brand": "Petron",
+    "created_at": "2024-10-15T13:30:00"
+  },
+  {
+    "id": 33,
+    "place_id": "ChIJ4uvgfCWtEmsRxWX8gQdH4hI",
+    "name": "Shell Zobel Roxas",
+    "address": "Zobel Roxas Street, Makati City",
+    "latitude": 14.5523,
+    "longitude": 121.0267,
+    "brand": "Shell",
+    "created_at": "2024-10-15T14:00:00"
+  },
+  {
+    "id": 34,
+    "place_id": "ChIJ5vwhfCWtEmsRyWX8gQdH4hI",
+    "name": "Seaoil Estrella Street",
+    "address": "Estrella Street, Makati City",
+    "latitude": 14.5489,
+    "longitude": 121.0223,
+    "brand": "Seaoil",
+    "created_at": "2024-10-15T14:30:00"
+  },
+  {
+    "id": 35,
+    "place_id": "ChIJ6wxifCWtEmsRzWX8gQdH4hI",
+    "name": "Phoenix Legaspi Village",
+    "address": "Rada Street, Legaspi Village, Makati City",
+    "latitude": 14.5572,
+    "longitude": 121.0198,
+    "brand": "Phoenix",
+    "created_at": "2024-10-15T15:00:00"
   }
 ]
 
