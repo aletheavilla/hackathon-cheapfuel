@@ -147,27 +147,27 @@ function Dashboard({ user, onLogout }) {
         <div className="search-section">
           <h2 className="search-title">Find Cheap Gas Stations</h2>
 
-          <div className="search-controls">
-            <div className="form-group">
-              <label className="form-label">📍 Your Location</label>
-              <AddressAutocomplete 
-                onAddressSelect={handleAddressSelect}
-                placeholder="Enter your starting address..."
-              />
-              {selectedAddress && (
-                <p style={{
-                  marginTop: '8px',
-                  fontSize: '14px',
-                  color: '#10b981',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}>
-                  ✓ {selectedAddress}
-                </p>
-              )}
-            </div>
+          <div className="form-group">
+            <label className="form-label">📍 Your Location</label>
+            <AddressAutocomplete 
+              onAddressSelect={handleAddressSelect}
+              placeholder="Enter your starting address..."
+            />
+            {selectedAddress && (
+              <p style={{
+                marginTop: '8px',
+                fontSize: '14px',
+                color: '#10b981',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}>
+                ✓ {selectedAddress}
+              </p>
+            )}
+          </div>
 
+          <div className="search-controls-row">
             <div className="form-group">
               <label className="form-label">Fuel Type</label>
               <select
@@ -180,29 +180,29 @@ function Dashboard({ user, onLogout }) {
                 <option value="Diesel">Diesel</option>
               </select>
             </div>
-          </div>
 
-          <div className="form-group">
-            <label className="form-label">Priority</label>
-            <div className="priority-buttons">
-              <button
-                className={`priority-btn ${priority === 'price' ? 'active' : ''}`}
-                onClick={() => setPriority('price')}
-              >
-                💰 Cheapest Price
-              </button>
-              <button
-                className={`priority-btn ${priority === 'time' ? 'active' : ''}`}
-                onClick={() => setPriority('time')}
-              >
-                ⚡ Fastest Arrival
-              </button>
-              <button
-                className={`priority-btn ${priority === 'distance' ? 'active' : ''}`}
-                onClick={() => setPriority('distance')}
-              >
-                📍 Shortest Distance
-              </button>
+            <div className="form-group">
+              <label className="form-label">Priority</label>
+              <div className="priority-buttons">
+                <button
+                  className={`priority-btn ${priority === 'price' ? 'active' : ''}`}
+                  onClick={() => setPriority('price')}
+                >
+                  💰 Cheapest Price
+                </button>
+                <button
+                  className={`priority-btn ${priority === 'time' ? 'active' : ''}`}
+                  onClick={() => setPriority('time')}
+                >
+                  ⚡ Fastest Arrival
+                </button>
+                <button
+                  className={`priority-btn ${priority === 'distance' ? 'active' : ''}`}
+                  onClick={() => setPriority('distance')}
+                >
+                  📍 Shortest Distance
+                </button>
+              </div>
             </div>
           </div>
         </div>
