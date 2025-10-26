@@ -80,7 +80,7 @@ function Dashboard({ user, onLogout }) {
     }
   };
 
-  const handleNavigate = async (station) => {
+  const handleToggleMap = async (station) => {
     try {
       // Toggle map visibility
       if (showMapForStation === station.id) {
@@ -91,6 +91,14 @@ function Dashboard({ user, onLogout }) {
     } catch (err) {
       console.error('Error getting navigation URL:', err);
     }
+  };
+
+  const handleNavigate = (station) => {
+    if (!location) return;
+    
+    // Open Google Maps with directions in a new tab
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${station.latitude},${station.longitude}&travelmode=driving`;
+    window.open(googleMapsUrl, '_blank');
   };
 
   const openPriceUpdateModal = (station) => {
@@ -305,9 +313,15 @@ function Dashboard({ user, onLogout }) {
                   <div className="station-actions">
                     <button
                       className="btn btn-primary"
-                      onClick={() => handleNavigate(station)}
+                      onClick={() => handleToggleMap(station)}
                     >
                       {showMapForStation === station.id ? '❌ Close Map' : '🗺️ Show Map'}
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => handleNavigate(station)}
+                    >
+                      🧭 Navigate
                     </button>
                     <button
                       className="btn btn-secondary"
