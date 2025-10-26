@@ -42,6 +42,21 @@ function Login({ onLogin }) {
           <p className="auth-subtitle">Welcome back! Sign in to continue</p>
         </div>
 
+        {/* Reminder Message */}
+        <div style={{
+          backgroundColor: '#fee2e2',
+          border: '1px solid #fecaca',
+          borderRadius: '8px',
+          padding: '12px 16px',
+          marginBottom: '20px',
+          color: '#dc2626',
+          fontSize: '14px',
+          lineHeight: '1.5',
+        }}>
+          <strong>⚠️ Reminder:</strong> Please use fake names and fake email addresses. 
+          We do not send verification emails, so any email address will work for testing purposes.
+        </div>
+
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>

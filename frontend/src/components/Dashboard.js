@@ -18,6 +18,7 @@ function Dashboard({ user, onLogout }) {
   const [showMapForStation, setShowMapForStation] = useState(null);
   const [recommendation, setRecommendation] = useState('');
   const [loadingRecommendation, setLoadingRecommendation] = useState(false);
+  const [bannerExpanded, setBannerExpanded] = useState(false);
   const navigate = useNavigate();
 
   // Handle address selection from autocomplete
@@ -150,6 +151,70 @@ function Dashboard({ user, onLogout }) {
           </button>
         </div>
       </header>
+
+      {/* Terms of Use & Privacy Policy Banner */}
+      <div style={{
+        backgroundColor: '#f3f4f6',
+        borderBottom: '1px solid #e5e7eb',
+        padding: '12px 24px',
+        cursor: 'pointer',
+        transition: 'background-color 0.2s',
+      }}
+      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
+      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+      onClick={() => setBannerExpanded(!bannerExpanded)}
+      >
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '14px',
+            fontWeight: '500',
+            color: '#374151',
+          }}>
+            <span style={{
+              fontSize: '18px',
+              transition: 'transform 0.2s',
+              transform: bannerExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+              display: 'inline-block',
+            }}>
+              ▼
+            </span>
+            Terms Of Use & Privacy Policy
+          </div>
+        </div>
+      </div>
+      
+      {/* Expanded Banner Content */}
+      {bannerExpanded && (
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderBottom: '1px solid #e5e7eb',
+          padding: '20px 24px',
+        }}>
+          <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            fontSize: '14px',
+            lineHeight: '1.6',
+            color: '#6b7280',
+          }}>
+            <p>In using this app, you agree to have read and understood the following:{'\n'}</p>
+            <ul style={{ marginTop: '10px' }}>
+              <li><strong>Data Sources:</strong> The location, gas prices, and ratings are <strong>synthetic data</strong> that are either randomly generated or statically set in the 'dummy_data' folder in the code repository.</li>
+              <li><strong>Data Storage:</strong> Login credentials are only stored for a maximum of <strong>24 hours</strong> in a Supabase (PostgreSQL) database. No other PII information is stored. The only other information stored are in Google logs for debugging purposes.</li>
+              <li><strong>Data Deletion:</strong> The completely data is deleted every 12mn UTC.</li>
+            </ul>
+          </div>
+        </div>
+      )}
 
       <div className="dashboard-content">
         <div className="search-section">
