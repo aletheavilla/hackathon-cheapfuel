@@ -5,6 +5,7 @@
 ## 🎯 Features
 
 ### Core Features (MVP)
+
 - **Real-time gas station search** based on user location
 - **Filter by fuel type** (Regular, Premium, Diesel)
 - **Prioritize results** by:
@@ -18,6 +19,7 @@
 - **Google Maps navigation** integration
 
 ### Future Features (Roadmap)
+
 - Fuel consumption tracking
 - Station promo alerts
 - Price trend predictions
@@ -26,6 +28,7 @@
 ## 🏗️ Architecture
 
 ### Tech Stack
+
 - **Frontend**: React (mobile-responsive SPA)
 - **Backend**: Flask (Python REST API)
 - **Database**: SQLite (can be upgraded to PostgreSQL)
@@ -33,6 +36,7 @@
 - **Authentication**: JWT tokens
 
 ### Project Structure
+
 ```
 hackathon/
 ├── backend/
@@ -61,6 +65,7 @@ hackathon/
 ## 🚀 Setup Instructions
 
 ### Prerequisites
+
 - Python 3.8+
 - Node.js 16+
 - Google Maps API Key
@@ -123,6 +128,7 @@ The frontend will start on `http://localhost:3000`
 ## 📱 Usage
 
 ### First Time Setup
+
 1. Open the app at `http://localhost:3000`
 2. Click "Sign Up" to create an account
 3. Enter your details:
@@ -134,6 +140,7 @@ The frontend will start on `http://localhost:3000`
 4. You'll be automatically logged in
 
 ### Finding Gas Stations
+
 1. The app will request your location (allow permission)
 2. Select your fuel type (Regular, Premium, Diesel)
 3. Choose your priority:
@@ -148,15 +155,18 @@ The frontend will start on `http://localhost:3000`
    - Google ratings
 
 ### Navigation
+
 1. Click "🗺️ Navigate" on any station card
 2. Opens Google Maps with turn-by-turn directions
 
 ### Updating Prices
+
 1. Click "💵 Update Price" on any station
 2. Enter the current price you observed
 3. Submit to help other users
 
 ### Managing Profile
+
 1. Click "Profile" in the header
 2. Update your name, car model, or fuel preference
 3. Save changes
@@ -164,12 +174,14 @@ The frontend will start on `http://localhost:3000`
 ## 🔐 API Endpoints
 
 ### Authentication
+
 - `POST /api/register` - Create new user account
 - `POST /api/login` - Login and get JWT token
 - `GET /api/profile` - Get current user profile (authenticated)
 - `PUT /api/profile` - Update user profile (authenticated)
 
 ### Gas Stations
+
 - `POST /api/stations/search` - Search nearby gas stations (authenticated)
   ```json
   {
@@ -184,11 +196,13 @@ The frontend will start on `http://localhost:3000`
 - `GET /api/stations/:id/navigate` - Get navigation URL (authenticated)
 
 ### Admin
+
 - `POST /api/admin/seed-prices` - Seed database with sample DOE prices
 
 ## 🗄️ Database Schema
 
 ### Users
+
 - id (Primary Key)
 - email (Unique)
 - password_hash
@@ -198,6 +212,7 @@ The frontend will start on `http://localhost:3000`
 - created_at
 
 ### GasStations
+
 - id (Primary Key)
 - place_id (Unique, from Google Maps)
 - name
@@ -208,6 +223,7 @@ The frontend will start on `http://localhost:3000`
 - created_at
 
 ### PriceUpdates
+
 - id (Primary Key)
 - station_id (Foreign Key)
 - fuel_type
@@ -228,16 +244,19 @@ The frontend will start on `http://localhost:3000`
 ## 🐛 Troubleshooting
 
 ### "No gas stations found"
+
 - Check if Google Maps API key is properly set
 - Ensure Places API is enabled in Google Cloud Console
 - Verify location permissions in browser
 
 ### Backend errors
+
 - Make sure all required APIs are enabled in Google Cloud
 - Check .env file has correct API key
 - Verify database file has write permissions
 
 ### Frontend not connecting to backend
+
 - Ensure backend is running on port 5000
 - Check REACT_APP_API_URL in frontend/.env
 - Look for CORS errors in browser console
@@ -249,6 +268,7 @@ MIT License - feel free to use this for your own projects!
 ## 🤝 Contributing
 
 This is a hackathon project, but contributions are welcome! Feel free to:
+
 - Report bugs
 - Suggest features
 - Submit pull requests
@@ -262,4 +282,3 @@ This is a hackathon project, but contributions are welcome! Feel free to:
 ---
 
 **Built with ❤️ for drivers who want to save money on fuel!**
-

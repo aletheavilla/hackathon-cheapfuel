@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getProfile, updateProfile } from '../services/api';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getProfile, updateProfile } from "../services/api";
 
 function Profile({ user, setUser, onLogout }) {
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    car_make: user?.car_make || '',
-    car_model: user?.car_model || '',
-    fuel_type: user?.fuel_type || 'Regular',
-    fuel_consumption: user?.fuel_consumption || '',
+    name: user?.name || "",
+    car_make: user?.car_make || "",
+    car_model: user?.car_model || "",
+    fuel_type: user?.fuel_type || "Regular",
+    fuel_consumption: user?.fuel_consumption || "",
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,21 +25,21 @@ function Profile({ user, setUser, onLogout }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
     setSuccess(false);
 
     try {
       const response = await updateProfile(formData);
       const updatedUser = response.data.user;
-      
+
       // Update local storage and state
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      localStorage.setItem("user", JSON.stringify(updatedUser));
       setUser(updatedUser);
-      
+
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update profile');
+      setError(err.response?.data?.message || "Failed to update profile");
     } finally {
       setLoading(false);
     }
@@ -50,7 +50,10 @@ function Profile({ user, setUser, onLogout }) {
       <header className="dashboard-header">
         <div className="dashboard-logo">🚗 CheapFuel</div>
         <div className="dashboard-actions">
-          <button className="btn btn-secondary" onClick={() => navigate('/dashboard')}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate("/dashboard")}
+          >
             Back to Dashboard
           </button>
           <button className="btn btn-danger" onClick={onLogout}>
@@ -67,13 +70,15 @@ function Profile({ user, setUser, onLogout }) {
 
           {error && <div className="error-message">{error}</div>}
           {success && (
-            <div style={{
-              backgroundColor: '#d1fae5',
-              color: '#065f46',
-              padding: '12px',
-              borderRadius: '8px',
-              marginBottom: '20px',
-            }}>
+            <div
+              style={{
+                backgroundColor: "#d1fae5",
+                color: "#065f46",
+                padding: "12px",
+                borderRadius: "8px",
+                marginBottom: "20px",
+              }}
+            >
               Profile updated successfully!
             </div>
           )}
@@ -86,7 +91,7 @@ function Profile({ user, setUser, onLogout }) {
                 className="form-input"
                 value={user?.email}
                 disabled
-                style={{ backgroundColor: '#f3f4f6' }}
+                style={{ backgroundColor: "#f3f4f6" }}
               />
             </div>
 
@@ -141,7 +146,9 @@ function Profile({ user, setUser, onLogout }) {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Estimated Fuel Consumption (km/l)</label>
+              <label className="form-label">
+                Estimated Fuel Consumption (km/l)
+              </label>
               <input
                 type="number"
                 name="fuel_consumption"
@@ -152,13 +159,21 @@ function Profile({ user, setUser, onLogout }) {
                 step="0.1"
                 min="0"
               />
-              <small style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '4px', display: 'block' }}>
-                Enter your car's average fuel consumption in kilometers per liter
+              <small
+                style={{
+                  color: "#6b7280",
+                  fontSize: "0.875rem",
+                  marginTop: "4px",
+                  display: "block",
+                }}
+              >
+                Enter your car's average fuel consumption in kilometers per
+                liter
               </small>
             </div>
 
             <button type="submit" className="form-button" disabled={loading}>
-              {loading ? 'Updating...' : 'Update Profile'}
+              {loading ? "Updating..." : "Update Profile"}
             </button>
           </form>
         </div>
@@ -168,4 +183,3 @@ function Profile({ user, setUser, onLogout }) {
 }
 
 export default Profile;
-

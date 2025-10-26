@@ -13,6 +13,7 @@ This guide explains how to configure Google Maps address autocomplete in CheapFu
 ## Prerequisites
 
 You need a Google Maps API key with the following APIs enabled:
+
 1. **Maps JavaScript API** (for frontend autocomplete)
 2. **Places API** (for address suggestions)
 3. **Distance Matrix API** (for calculating distances)
@@ -89,6 +90,7 @@ OPENAI_API_KEY=your-openai-key-here  # Optional, for GPT-4 recommendations
 ### Backend (Validation)
 
 The backend includes a `/api/geocode` endpoint that:
+
 - Accepts an address string
 - Validates it using Google Maps Geocoding API
 - Returns coordinates only for valid addresses
@@ -102,10 +104,12 @@ The backend includes a `/api/geocode` endpoint that:
 Located at: `frontend/src/components/AddressAutocomplete.js`
 
 **Props:**
+
 - `onAddressSelect(addressData)` - Callback when a valid address is selected
 - `placeholder` - Placeholder text for the input (optional)
 
 **addressData object:**
+
 ```javascript
 {
   address: "123 Main Street, Manila, Metro Manila, Philippines",
@@ -119,6 +123,7 @@ Located at: `frontend/src/components/AddressAutocomplete.js`
 ### Integration in Dashboard
 
 The Dashboard component now:
+
 - Displays the AddressAutocomplete component
 - Shows the selected address with a green checkmark
 - Uses the geocoded coordinates for searching gas stations
@@ -127,12 +132,14 @@ The Dashboard component now:
 ## Testing
 
 1. Start the frontend:
+
    ```bash
    cd frontend
    npm start
    ```
 
 2. Start the backend:
+
    ```bash
    cd backend
    python app.py
@@ -151,6 +158,7 @@ The Dashboard component now:
 **Problem:** The Google Maps JavaScript API script isn't loading in the browser.
 
 **Solution:**
+
 1. Check that your `REACT_APP_GOOGLE_MAPS_API_KEY` is set in `frontend/.env`
 2. Restart the frontend development server: `npm start`
 3. Check browser console for API key errors
@@ -167,6 +175,7 @@ The Dashboard component now:
 **Problem:** Places API might not be enabled or API key is invalid.
 
 **Solutions:**
+
 1. Verify Places API is enabled in Google Cloud Console
 2. Check that your API key is correct in `frontend/.env`
 3. Check browser console for API errors
@@ -177,6 +186,7 @@ The Dashboard component now:
 **Problem:** Backend can't access Google Maps API.
 
 **Solutions:**
+
 1. Check that `GOOGLE_MAPS_API_KEY` is set in `backend/.env`
 2. Verify Geocoding API is enabled in Google Cloud Console
 3. Check backend logs for detailed error messages
@@ -186,24 +196,28 @@ The Dashboard component now:
 For production, restrict your API keys:
 
 ### Frontend API Key
+
 - Add HTTP referrer restrictions:
   - `https://yourdomain.com/*`
   - `http://localhost:3000/*` (for development)
 - API restrictions: Maps JavaScript API, Places API, Maps Embed API
 
 ### Backend API Key
+
 - Add IP address restrictions (your server IPs)
 - API restrictions: Distance Matrix API, Geocoding API, Places API
 
 ## Cost Considerations
 
 Google Maps APIs are not free after the free tier:
+
 - **Maps JavaScript API:** $7 per 1,000 loads
 - **Places API (Autocomplete):** $2.83 per 1,000 requests
 - **Geocoding API:** $5 per 1,000 requests
 - **Distance Matrix API:** $5-$10 per 1,000 elements
 
 Google provides **$200 free credit per month**, which covers:
+
 - ~70,000 autocomplete requests
 - ~40,000 geocoding requests
 - ~20,000-40,000 distance matrix requests
@@ -213,6 +227,7 @@ Monitor your usage in Google Cloud Console.
 ## Alternative: Manual Address Entry
 
 If you prefer not to use Google Maps autocomplete (to save costs or for other reasons), you can:
+
 1. Use a simple text input
 2. Call the backend `/api/geocode` endpoint when the user submits
 3. Validate the address server-side before searching for gas stations
@@ -224,4 +239,3 @@ If you prefer not to use Google Maps autocomplete (to save costs or for other re
 - The component cleans up event listeners when unmounted to prevent memory leaks
 - Address validation happens entirely on the frontend for better UX
 - Backend geocoding is available as a fallback or for server-side validation
-

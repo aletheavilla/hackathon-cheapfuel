@@ -5,9 +5,11 @@ This directory contains JSON dummy data files for testing and development purpos
 ## Files
 
 ### 1. users.json
+
 Contains 10 sample users with different car models and fuel preferences.
 
 **Fields:**
+
 - `id` - User ID (integer)
 - `email` - User email address (string)
 - `name` - User full name (string)
@@ -18,9 +20,11 @@ Contains 10 sample users with different car models and fuel preferences.
 **Note:** Passwords are not included in the JSON as they should be hashed before storage.
 
 ### 2. gas_stations.json
+
 Contains 20 sample gas stations across Metro Manila with realistic locations.
 
 **Fields:**
+
 - `id` - Station ID (integer)
 - `place_id` - Google Places unique identifier (string)
 - `name` - Station name (string)
@@ -31,6 +35,7 @@ Contains 20 sample gas stations across Metro Manila with realistic locations.
 - `created_at` - Timestamp when station was added (ISO 8601 datetime)
 
 **Brands included:**
+
 - Shell (5 stations)
 - Petron (5 stations)
 - Caltex (3 stations)
@@ -38,6 +43,7 @@ Contains 20 sample gas stations across Metro Manila with realistic locations.
 - Phoenix (4 stations)
 
 **Location coverage:**
+
 - Makati City
 - Taguig City (BGC)
 - Pasay City
@@ -50,9 +56,11 @@ Contains 20 sample gas stations across Metro Manila with realistic locations.
 - Antipolo City
 
 ### 3. price_updates.json
+
 Contains 70 price updates: 60 DOE prices (3 fuel types × 20 stations) + 10 user-submitted prices.
 
 **Fields:**
+
 - `id` - Update ID (integer)
 - `station_id` - Foreign key to gas_station (integer)
 - `fuel_type` - Type of fuel: "Regular", "Premium", or "Diesel" (string)
@@ -63,6 +71,7 @@ Contains 70 price updates: 60 DOE prices (3 fuel types × 20 stations) + 10 user
 - `verified` - Whether the price has been verified (boolean)
 
 **Price ranges (realistic Philippine fuel prices as of Oct 2024):**
+
 - Regular: ₱53.50 - ₱56.20 per liter
 - Premium: ₱63.90 - ₱67.00 per liter
 - Diesel: ₱50.30 - ₱53.10 per liter
@@ -73,6 +82,7 @@ Contains 70 price updates: 60 DOE prices (3 fuel types × 20 stations) + 10 user
 ## Usage
 
 These files can be used to:
+
 1. Seed the development database
 2. Test API endpoints
 3. Demonstrate application functionality
@@ -83,6 +93,7 @@ These files can be used to:
 To import this data into the SQLite database, you can create a script that reads these JSON files and inserts them into the respective tables using SQLAlchemy ORM.
 
 Example:
+
 ```python
 import json
 from backend.app import app, db, User, GasStation, PriceUpdate
@@ -102,21 +113,21 @@ with app.app_context():
                 fuel_type=user_data.get('fuel_type')
             )
             db.session.add(user)
-    
+
     # Load gas stations
     with open('dummy_data/gas_stations.json') as f:
         stations = json.load(f)
         for station_data in stations:
             station = GasStation(**station_data)
             db.session.add(station)
-    
+
     # Load price updates
     with open('dummy_data/price_updates.json') as f:
         prices = json.load(f)
         for price_data in prices:
             price = PriceUpdate(**price_data)
             db.session.add(price)
-    
+
     db.session.commit()
 ```
 
@@ -127,4 +138,3 @@ with app.app_context():
 - Prices reflect realistic Philippine fuel prices as of October 2024
 - User passwords are not included; use a default password when importing
 - Timestamps use ISO 8601 format for consistency
-
