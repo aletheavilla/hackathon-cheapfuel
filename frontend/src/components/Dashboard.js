@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { searchStations, getNavigationUrl, updateStationPrice, getRecommendation } from '../services/api';
+import { searchStations, updateStationPrice, getRecommendation } from '../services/api';
+import AddressAutocomplete from './AddressAutocomplete';
+import ApiKeyDiagnostics from './ApiKeyDiagnostics';
 
 function Dashboard({ user, onLogout }) {
   const [stations, setStations] = useState([]);
@@ -9,6 +11,7 @@ function Dashboard({ user, onLogout }) {
   const [fuelType, setFuelType] = useState(user?.fuel_type || 'Regular');
   const [priority, setPriority] = useState('price');
   const [location, setLocation] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState('');
   const [selectedStation, setSelectedStation] = useState(null);
   const [priceUpdateModal, setPriceUpdateModal] = useState(false);
   const [newPrice, setNewPrice] = useState('');
@@ -17,38 +20,20 @@ function Dashboard({ user, onLogout }) {
   const [loadingRecommendation, setLoadingRecommendation] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Get user's current location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-          // Default to Manila coordinates
-          setLocation({
-            latitude: 14.5995,
-            longitude: 120.9842,
-          });
-        }
-      );
-    } else {
-      // Default to Manila coordinates
-      setLocation({
-        latitude: 14.5995,
-        longitude: 120.9842,
-      });
-    }
-  }, []);
+  // Handle address selection from autocomplete
+  const handleAddressSelect = (addressData) => {
+    setSelectedAddress(addressData.address);
+    setLocation({
+      latitude: addressData.latitude,
+      longitude: addressData.longitude,
+    });
+  };
 
   useEffect(() => {
     if (location) {
       handleSearch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, fuelType, priority]);
 
   const handleSearch = async () => {
@@ -145,6 +130,7 @@ function Dashboard({ user, onLogout }) {
 
   return (
     <div className="dashboard">
+      <ApiKeyDiagnostics />
       <header className="dashboard-header">
         <div className="dashboard-logo">🚗 CheapFuel</div>
         <div className="dashboard-actions">
@@ -162,6 +148,26 @@ function Dashboard({ user, onLogout }) {
           <h2 className="search-title">Find Cheap Gas Stations</h2>
 
           <div className="search-controls">
+            <div className="form-group">
+              <label className="form-label">📍 Your Location</label>
+              <AddressAutocomplete 
+                onAddressSelect={handleAddressSelect}
+                placeholder="Enter your starting address..."
+              />
+              {selectedAddress && (
+                <p style={{
+                  marginTop: '8px',
+                  fontSize: '14px',
+                  color: '#10b981',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  ✓ {selectedAddress}
+                </p>
+              )}
+            </div>
+
             <div className="form-group">
               <label className="form-label">Fuel Type</label>
               <select

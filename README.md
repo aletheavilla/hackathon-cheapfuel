@@ -5,11 +5,13 @@ CheapFuel helps drivers instantly find and navigate to the cheapest and nearest 
 ## ✨ Key Features
 
 - 🔍 **Real-time gas station search** based on your location
+- 📍 **Smart address input** with Google Maps autocomplete - only validated addresses accepted
 - 💰 **Smart filtering** by cheapest price, fastest arrival, or shortest distance
 - ⛽ **Multiple fuel types** (Regular, Premium, Diesel)
 - 🗺️ **Google Maps integration** for live traffic routing
 - 👥 **Community pricing** - DOE baseline + user updates
 - 📱 **Mobile-responsive** design
+- 🤖 **AI-powered recommendations** using GPT-4
 
 ## 🚀 Quick Start
 
@@ -20,14 +22,22 @@ CheapFuel helps drivers instantly find and navigate to the cheapest and nearest 
 
 ### 2. Get Google Maps API Key
 1. Visit [Google Cloud Console](https://console.cloud.google.com/)
-2. Enable: Geocoding API, Places API, Distance Matrix API
+2. Enable: **Maps JavaScript API**, **Places API**, **Geocoding API**, **Distance Matrix API**, **Maps Embed API**
 3. Create an API key
+4. See [GOOGLE_MAPS_SETUP.md](./GOOGLE_MAPS_SETUP.md) for detailed instructions
 
-### 3. Configure Backend
-Edit `backend/.env`:
-```
+### 3. Configure Environment Variables
+
+**Backend** - Create `backend/.env`:
+```env
 GOOGLE_MAPS_API_KEY=your_key_here
 SECRET_KEY=your-secret-key
+OPENAI_API_KEY=your-openai-key-here  # Optional, for GPT-4 recommendations
+```
+
+**Frontend** - Create `frontend/.env`:
+```env
+REACT_APP_GOOGLE_MAPS_API_KEY=your_key_here
 ```
 
 ### 4. Run the App
@@ -51,8 +61,10 @@ Visit: **http://localhost:3000**
 
 ## 📚 Documentation
 
+- **[GOOGLE_MAPS_SETUP.md](./GOOGLE_MAPS_SETUP.md)** - Google Maps address autocomplete setup
 - **[CHEAPFUEL_README.md](./CHEAPFUEL_README.md)** - Complete documentation
 - **[QUICKSTART.md](./QUICKSTART.md)** - Quick reference guide
+- **[GPT4_RECOMMENDATION_FEATURE.md](./GPT4_RECOMMENDATION_FEATURE.md)** - AI recommendations guide
 
 ## 🏗️ Tech Stack
 
@@ -121,6 +133,8 @@ Update personal details, car model, and fuel preferences.
 - `POST /api/stations/search` - Search stations
 - `POST /api/stations/:id/price` - Update price
 - `GET /api/stations/:id/navigate` - Get navigation URL
+- `POST /api/stations/recommendation` - Get GPT-4 recommendation
+- `POST /api/geocode` - Geocode and validate address
 
 ### Database Schema
 - **Users**: email, name, car_model, fuel_type

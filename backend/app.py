@@ -635,6 +635,59 @@ Keep it concise and use emojis sparingly (max 1-2). Focus on the savings and con
             'recommendation': f"🎯 Best Deal: {cheapest_station['name']} offers the cheapest {fuel_type} at ₱{cheapest_station['price']:.2f}/liter, just {cheapest_station['distance_km']} km away!"
         })
 
+@app.route('/api/geocode', methods=['POST'])
+@token_required
+def geocode_address(current_user):
+    """Geocode an address using Google Maps Geocoding API"""
+    data = request.get_json()
+    
+    address = data.get('address')
+    
+    if not address:
+        return jsonify({'message': 'Address is required'}), 400
+    
+    api_key = os.getenv('GOOGLE_MAPS_API_KEY')
+    
+    if not api_key:
+        return jsonify({'message': 'Google Maps API key not configured'}), 500
+    
+    url = "https://maps.googleapis.com/maps/api/geocode/json"
+    params = {
+        "address": address,
+        "key": api_key,
+        "components": "country:PH"  # Restrict to Philippines
+    }
+    
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+        
+        if data['status'] == 'OK' and data['results']:
+            result = data['results'][0]
+            location = result['geometry']['location']
+            
+            return jsonify({
+                'address': result['formatted_address'],
+                'latitude': location['lat'],
+                'longitude': location['lng'],
+                'place_id': result['place_id'],
+                'status': 'OK'
+            })
+        elif data['status'] == 'ZERO_RESULTS':
+            return jsonify({
+                'message': 'Address not found in Google Maps',
+                'status': 'ZERO_RESULTS'
+            }), 404
+        else:
+            return jsonify({
+                'message': f"Geocoding failed: {data.get('status')}",
+                'status': data.get('status')
+            }), 400
+            
+    except Exception as e:
+        print(f"Error geocoding address: {e}")
+        return jsonify({'message': 'Failed to geocode address'}), 500
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({
