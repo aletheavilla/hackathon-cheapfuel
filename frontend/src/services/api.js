@@ -52,6 +52,7 @@ export const searchStations = (data) => api.post('/stations/search', data);
 export const updateStationPrice = (stationId, data) => api.post(`/stations/${stationId}/price`, data);
 export const getNavigationUrl = (stationId) => api.get(`/stations/${stationId}/navigate`);
 export const getRecommendation = (data) => api.post('/stations/recommendation', data);
+export const geocodeAddress = (address) => api.post('/geocode', { address });
 
 // Admin APIs
 export const seedPrices = () => api.post('/admin/seed-prices');
