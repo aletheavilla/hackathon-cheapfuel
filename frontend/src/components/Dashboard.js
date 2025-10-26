@@ -307,7 +307,7 @@ function Dashboard({ user, onLogout }) {
                       className="btn btn-primary"
                       onClick={() => handleNavigate(station)}
                     >
-                      {showMapForStation === station.id ? '❌ Close Map' : '🗺️ Navigate'}
+                      {showMapForStation === station.id ? '❌ Close Map' : '🗺️ Show Map'}
                     </button>
                     <button
                       className="btn btn-secondary"
