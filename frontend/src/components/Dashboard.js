@@ -479,6 +479,66 @@ function Dashboard({ user, onLogout }) {
           </div>
         </div>
       )}
+
+      {/* Footer */}
+      <footer style={{
+        backgroundColor: '#1f2937',
+        color: '#e5e7eb',
+        padding: '24px 32px',
+        marginTop: '48px',
+        borderTop: '4px solid #3b82f6',
+      }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '20px',
+          flexWrap: 'wrap',
+        }}>
+          <div style={{
+            fontSize: '14px',
+            lineHeight: '1.6',
+            flex: '1',
+            minWidth: '300px',
+          }}>
+            This demo app was built during the{' '}
+            <a 
+              href="https://www.eventbrite.com/e/pie-ai-manila-ai-hives-lemnl-vibe-hack-20-ai-and-data-hackathon-tickets-1838801327269"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#3b82f6',
+                textDecoration: 'underline',
+                fontWeight: '500',
+              }}
+            >
+              Pie & AI: Manila hackathon
+            </a>{' '}
+            through the joint effort of Thea Villa, Werald Co, and Paolo.
+          </div>
+          <button
+            onClick={() => window.open('https://www.aletheavilla.com/contact-me', '_blank')}
+            style={{
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '12px 24px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s',
+              whiteSpace: 'nowrap',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+          >
+            👋 Say Hi!
+          </button>
+        </div>
+      </footer>
     </div>
   );
 }
