@@ -195,6 +195,22 @@
   margin-bottom: 20px;
 }
 
+.search-controls-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.search-controls-row .form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-controls-row .form-group:last-child {
+  flex: 2;
+}
+
 .priority-buttons {
   display: flex;
   gap: 10px;
@@ -434,6 +450,14 @@
 
   .search-controls {
     grid-template-columns: 1fr;
+  }
+
+  .search-controls-row {
+    flex-direction: column;
+  }
+
+  .search-controls-row .form-group {
+    width: 100%;
   }
 
   .priority-buttons {
