@@ -34,7 +34,7 @@
     "place_id": "ChIJR1wbfCatEmsRHx4VPZWwgko",
     "name": "Shell BGC High Street",
     "address": "7th Avenue, BGC, Taguig City",
-    "latitude": 14.5510,
+    "latitude": 14.551,
     "longitude": 121.0505,
     "brand": "Shell",
     "created_at": "2024-10-02T11:00:00"
@@ -44,7 +44,7 @@
     "place_id": "ChIJ8UBKxgetEmsRBH4VH_8aULk",
     "name": "Petron Rockwell Center",
     "address": "Rockwell Drive, Makati City",
-    "latitude": 14.5650,
+    "latitude": 14.565,
     "longitude": 121.0385,
     "brand": "Petron",
     "created_at": "2024-10-02T11:00:00"
@@ -350,4 +350,3 @@
     "created_at": "2024-10-15T15:00:00"
   }
 ]
-

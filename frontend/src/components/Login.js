@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../services/api';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/api";
 
 function Login({ onLogin }) {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -20,15 +20,17 @@ function Login({ onLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       const response = await login(formData);
       onLogin(response.data.token, response.data.user);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to login. Please try again.');
+      setError(
+        err.response?.data?.message || "Failed to login. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -43,18 +45,21 @@ function Login({ onLogin }) {
         </div>
 
         {/* Reminder Message */}
-        <div style={{
-          backgroundColor: '#fee2e2',
-          border: '1px solid #fecaca',
-          borderRadius: '8px',
-          padding: '12px 16px',
-          marginBottom: '20px',
-          color: '#dc2626',
-          fontSize: '14px',
-          lineHeight: '1.5',
-        }}>
-          <strong>⚠️ Reminder:</strong> Please use fake names and fake email addresses. 
-          We do not send verification emails, so any email address will work for testing purposes.
+        <div
+          style={{
+            backgroundColor: "#fee2e2",
+            border: "1px solid #fecaca",
+            borderRadius: "8px",
+            padding: "12px 16px",
+            marginBottom: "20px",
+            color: "#dc2626",
+            fontSize: "14px",
+            lineHeight: "1.5",
+          }}
+        >
+          <strong>⚠️ Reminder:</strong> Please use fake names and fake email
+          addresses. We do not send verification emails, so any email address
+          will work for testing purposes.
         </div>
 
         {error && <div className="error-message">{error}</div>}
@@ -87,12 +92,15 @@ function Login({ onLogin }) {
           </div>
 
           <button type="submit" className="form-button" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <div className="auth-footer">
-          Don't have an account? <Link to="/register" className="auth-link">Sign Up</Link>
+          Don't have an account?{" "}
+          <Link to="/register" className="auth-link">
+            Sign Up
+          </Link>
         </div>
       </div>
     </div>
@@ -100,4 +108,3 @@ function Login({ onLogin }) {
 }
 
 export default Login;
-

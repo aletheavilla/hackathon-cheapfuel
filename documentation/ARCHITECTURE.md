@@ -255,28 +255,33 @@ DEPLOYMENT ARCHITECTURE (Future):
 ## Technology Choices Explained
 
 ### Why Flask?
+
 - Lightweight and fast
 - Great for APIs
 - Easy to understand and extend
 - Extensive ecosystem
 
 ### Why React?
+
 - Component-based architecture
 - Fast rendering with Virtual DOM
 - Huge community and resources
 - Easy to make responsive
 
 ### Why SQLite (dev) / PostgreSQL (prod)?
+
 - SQLite: Zero configuration, perfect for development
 - PostgreSQL: Production-ready, ACID compliant, scalable
 
 ### Why JWT?
+
 - Stateless authentication
 - Works across multiple devices
 - No server-side sessions needed
 - Industry standard
 
 ### Why Google Maps?
+
 - Most comprehensive location data
 - Reliable traffic information
 - Familiar to users
@@ -333,12 +338,14 @@ DEPLOYMENT ARCHITECTURE (Future):
 ## Scalability Path
 
 ### Current (MVP)
+
 - Single server
 - SQLite database
 - ~100 concurrent users
 - ~1000 stations
 
 ### Phase 2 (Growth)
+
 - Multiple backend instances
 - PostgreSQL database
 - Redis caching
@@ -346,10 +353,10 @@ DEPLOYMENT ARCHITECTURE (Future):
 - ~100,000 stations
 
 ### Phase 3 (Scale)
+
 - Kubernetes orchestration
 - Database sharding
 - CDN for frontend
 - Elasticsearch for search
 - ~100,000+ concurrent users
 - Millions of stations
-

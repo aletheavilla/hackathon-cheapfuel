@@ -16,11 +16,13 @@ CheapFuel helps drivers instantly find and navigate to the cheapest and nearest 
 ## 🚀 Quick Start
 
 ### 1. Run Setup
+
 ```bash
 ./setup.sh
 ```
 
 ### 2. Get Google Maps API Key
+
 1. Visit [Google Cloud Console](https://console.cloud.google.com/)
 2. Enable: **Maps JavaScript API**, **Places API**, **Geocoding API**, **Distance Matrix API**, **Maps Embed API**
 3. Create an API key
@@ -29,6 +31,7 @@ CheapFuel helps drivers instantly find and navigate to the cheapest and nearest 
 ### 3. Configure Environment Variables
 
 **Backend** - Create `backend/.env`:
+
 ```env
 GOOGLE_MAPS_API_KEY=your_key_here
 SECRET_KEY=your-secret-key
@@ -36,16 +39,19 @@ OPENAI_API_KEY=your-openai-key-here  # Optional, for GPT-4 recommendations
 ```
 
 **Frontend** - Create `frontend/.env`:
+
 ```env
 REACT_APP_GOOGLE_MAPS_API_KEY=your_key_here
 ```
 
 ### 4. Run the App
+
 ```bash
 ./run.sh
 ```
 
 Or manually:
+
 ```bash
 # Terminal 1 - Backend
 cd backend
@@ -99,7 +105,7 @@ hackathon/
 ✅ Display optimal route with live traffic  
 ✅ User registration with car and fuel preferences  
 ✅ Navigate to stations via Google Maps  
-✅ Report price updates  
+✅ Report price updates
 
 ## 🔮 Future Features
 
@@ -111,21 +117,26 @@ hackathon/
 ## 📸 Screenshots
 
 ### Login/Registration
+
 Clean, modern authentication flow with car model and fuel type setup.
 
 ### Dashboard
+
 Search and filter gas stations with real-time prices, showing:
+
 - Price per liter with source (DOE/User)
 - Distance and estimated drive time
 - Google ratings
 - One-click navigation
 
 ### Profile Management
+
 Update personal details, car model, and fuel preferences.
 
 ## 🛠️ Development
 
 ### Backend API Endpoints
+
 - `POST /api/register` - User registration
 - `POST /api/login` - User login
 - `GET /api/profile` - Get user profile
@@ -137,6 +148,7 @@ Update personal details, car model, and fuel preferences.
 - `POST /api/geocode` - Geocode and validate address
 
 ### Database Schema
+
 - **Users**: email, name, car_model, fuel_type
 - **GasStations**: place_id, name, address, lat/lng
 - **PriceUpdates**: station, fuel_type, price, source (DOE/USER)
@@ -144,15 +156,18 @@ Update personal details, car model, and fuel preferences.
 ## 🐛 Troubleshooting
 
 **No stations found?**
+
 - Check Google Maps API key
 - Enable required APIs in Google Cloud Console
 - Allow location permissions in browser
 
 **Backend errors?**
+
 - Verify .env file configuration
 - Check API quota in Google Cloud Console
 
 **Frontend not connecting?**
+
 - Ensure backend is running on port 5000
 - Check REACT_APP_API_URL in frontend/.env
 

@@ -7,33 +7,39 @@ Your complete **CheapFuel** application is ready! Here's what's been implemented
 ### 🎯 Core Features (100% Complete)
 
 ✅ **User Authentication & Profiles**
+
 - Registration with email, name, car model, and fuel preferences
 - Secure JWT-based authentication
 - Profile management (update car details and fuel preferences)
 
 ✅ **Gas Station Search**
+
 - Real-time location-based search
 - Google Maps Places API integration
 - Filter by fuel type (Regular, Premium, Diesel)
 - 5km radius search with pagination support
 
 ✅ **Smart Prioritization**
+
 - 💰 **Cheapest Price** - Find lowest fuel costs
 - ⚡ **Fastest Arrival** - Optimize for quickest drive (with traffic)
 - 📍 **Shortest Distance** - Nearest stations first
 
 ✅ **Price Management**
+
 - DOE baseline prices (seeded in database)
 - User-submitted price updates
 - Visual distinction (DOE vs User source)
 - 7-day validity for user prices
 
 ✅ **Navigation Integration**
+
 - One-click Google Maps navigation
 - Turn-by-turn directions
 - Live traffic data
 
 ✅ **Modern UI/UX**
+
 - Mobile-first responsive design
 - Clean, intuitive interface
 - Real-time updates
@@ -87,32 +93,37 @@ hackathon/
 ## 🚀 Quick Start (3 Steps)
 
 ### Step 1: Setup Environment
+
 ```bash
 ./setup.sh
 ```
 
 ### Step 2: Configure Google Maps API
+
 1. Get API key from [Google Cloud Console](https://console.cloud.google.com/)
 2. Enable: **Geocoding API**, **Places API**, **Distance Matrix API**
 3. Edit `backend/.env`:
+
 ```env
 GOOGLE_MAPS_API_KEY=your_actual_key_here
 SECRET_KEY=your-secret-key
 ```
 
 ### Step 3: Run the App
+
 ```bash
 ./run.sh
 ```
 
 **Or manually:**
+
 ```bash
 # Terminal 1 - Backend
 cd backend
 source venv/bin/activate
 python app.py
 
-# Terminal 2 - Frontend  
+# Terminal 2 - Frontend
 cd frontend
 npm start
 ```
@@ -124,11 +135,13 @@ Visit: **http://localhost:3000** 🎉
 ## 🧪 Testing Your Installation
 
 ### 1. Check Environment
+
 ```bash
 python3 check_env.py
 ```
 
 ### 2. Test Backend API
+
 ```bash
 # Health check
 curl http://localhost:5000/api/health
@@ -138,6 +151,7 @@ curl -X POST http://localhost:5000/api/admin/seed-prices
 ```
 
 ### 3. Test Frontend
+
 1. Open http://localhost:3000
 2. Create an account
 3. Allow location permissions
@@ -149,31 +163,34 @@ curl -X POST http://localhost:5000/api/admin/seed-prices
 
 ## 📚 Documentation Files
 
-| File | Purpose |
-|------|---------|
-| `README.md` | Main overview and quick start |
-| `CHEAPFUEL_README.md` | Complete feature documentation |
-| `QUICKSTART.md` | Quick reference for running the app |
-| `API_DOCUMENTATION.md` | Full API endpoint documentation |
-| `TESTING.md` | Comprehensive testing guide |
+| File                   | Purpose                             |
+| ---------------------- | ----------------------------------- |
+| `README.md`            | Main overview and quick start       |
+| `CHEAPFUEL_README.md`  | Complete feature documentation      |
+| `QUICKSTART.md`        | Quick reference for running the app |
+| `API_DOCUMENTATION.md` | Full API endpoint documentation     |
+| `TESTING.md`           | Comprehensive testing guide         |
 
 ---
 
 ## 🔧 Tech Stack
 
 ### Backend
+
 - **Flask** - Python web framework
 - **SQLAlchemy** - ORM for database
 - **JWT** - Token-based authentication
 - **SQLite** - Database (easily upgradeable to PostgreSQL)
 
 ### Frontend
+
 - **React 18** - UI framework
 - **React Router** - Client-side routing
 - **Axios** - HTTP client
 - **CSS3** - Modern styling
 
 ### External APIs
+
 - **Google Maps Geocoding API** - Location to coordinates
 - **Google Maps Places API** - Gas station search
 - **Google Maps Distance Matrix API** - Distance & duration with traffic
@@ -183,12 +200,14 @@ curl -X POST http://localhost:5000/api/admin/seed-prices
 ## 🎨 Key Features Implemented
 
 ### Authentication Flow
+
 - Secure password hashing (Werkzeug)
 - JWT token generation (30-day expiry)
 - Token persistence in localStorage
 - Protected routes
 
 ### Station Search Algorithm
+
 1. Get user location (GPS or fallback)
 2. Fetch nearby stations from Google Maps
 3. Store new stations in database
@@ -198,11 +217,13 @@ curl -X POST http://localhost:5000/api/admin/seed-prices
 7. Return enriched results
 
 ### Price Logic
+
 - **DOE Prices**: Baseline, seed with `/admin/seed-prices`
 - **User Prices**: Valid for 7 days, override DOE
 - **Visual Distinction**: Blue badge (DOE) vs Green badge (User)
 
 ### Responsive Design
+
 - Desktop: Wide layout, side-by-side info
 - Tablet: Wrapped buttons, stacked cards
 - Mobile: Full-width forms, vertical layout
@@ -212,18 +233,21 @@ curl -X POST http://localhost:5000/api/admin/seed-prices
 ## 🗄️ Database Schema
 
 ### Users Table
+
 ```sql
 id, email (unique), password_hash, name, car_model, fuel_type, created_at
 ```
 
 ### GasStations Table
+
 ```sql
 id, place_id (unique), name, address, latitude, longitude, brand, created_at
 ```
 
 ### PriceUpdates Table
+
 ```sql
-id, station_id (FK), fuel_type, price, source (DOE/USER), 
+id, station_id (FK), fuel_type, price, source (DOE/USER),
 user_id (FK), updated_at, verified
 ```
 
@@ -231,21 +255,21 @@ user_id (FK), updated_at, verified
 
 ## 🎯 PRD Requirements Met
 
-| Requirement | Status |
-|------------|--------|
-| Search nearby gas stations | ✅ Implemented |
-| Filter by fuel type | ✅ Implemented |
-| Show price, distance, ETA | ✅ Implemented |
+| Requirement                       | Status         |
+| --------------------------------- | -------------- |
+| Search nearby gas stations        | ✅ Implemented |
+| Filter by fuel type               | ✅ Implemented |
+| Show price, distance, ETA         | ✅ Implemented |
 | Prioritize by price/time/distance | ✅ Implemented |
-| Display optimal route (traffic) | ✅ Implemented |
-| User registration | ✅ Implemented |
-| Set car and fuel type | ✅ Implemented |
-| Navigate to stations | ✅ Implemented |
-| Report price updates | ✅ Implemented |
-| DOE baseline data | ✅ Implemented |
-| User corrections | ✅ Implemented |
-| Visual price source distinction | ✅ Implemented |
-| Mobile-first design | ✅ Implemented |
+| Display optimal route (traffic)   | ✅ Implemented |
+| User registration                 | ✅ Implemented |
+| Set car and fuel type             | ✅ Implemented |
+| Navigate to stations              | ✅ Implemented |
+| Report price updates              | ✅ Implemented |
+| DOE baseline data                 | ✅ Implemented |
+| User corrections                  | ✅ Implemented |
+| Visual price source distinction   | ✅ Implemented |
+| Mobile-first design               | ✅ Implemented |
 
 ---
 
@@ -286,10 +310,13 @@ The following features are in the roadmap but not yet implemented:
 ## 📱 Screenshots
 
 ### Registration
+
 Modern signup form with car model and fuel type selection.
 
 ### Dashboard
+
 List of nearby stations with:
+
 - Name and address
 - Price with source badge (DOE/User)
 - Distance and drive time
@@ -297,12 +324,15 @@ List of nearby stations with:
 - Navigate and Update Price buttons
 
 ### Priority Filters
+
 Three buttons to switch between:
+
 - 💰 Cheapest Price
 - ⚡ Fastest Arrival
 - 📍 Shortest Distance
 
 ### Profile
+
 Update user information, car model, and fuel preferences.
 
 ---
@@ -312,6 +342,7 @@ Update user information, car model, and fuel preferences.
 This is a hackathon project, but contributions are welcome!
 
 ### How to Contribute
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -319,6 +350,7 @@ This is a hackathon project, but contributions are welcome!
 5. Submit a pull request
 
 ### Areas for Improvement
+
 - Add unit tests (pytest for backend, Jest for frontend)
 - Implement real-time price updates (WebSockets)
 - Add map view with station markers
@@ -339,12 +371,14 @@ MIT License - Free to use and modify!
 **Built with love for the hackathon!**
 
 Technologies used:
+
 - Flask & SQLAlchemy
 - React & React Router
 - Google Maps Platform
 - Modern CSS3
 
 Special thanks to:
+
 - DOE Philippines (for baseline fuel data concept)
 - Google Maps API (for location services)
 - Open source community
@@ -356,16 +390,19 @@ Special thanks to:
 If you want to learn more about the technologies used:
 
 ### Backend
+
 - [Flask Documentation](https://flask.palletsprojects.com/)
 - [SQLAlchemy Tutorial](https://docs.sqlalchemy.org/en/14/tutorial/)
 - [JWT.io](https://jwt.io/) - Understanding JWT
 
 ### Frontend
+
 - [React Documentation](https://react.dev/)
 - [React Router](https://reactrouter.com/)
 - [Modern CSS](https://web.dev/learn/css/)
 
 ### APIs
+
 - [Google Maps Platform Docs](https://developers.google.com/maps/documentation)
 
 ---
@@ -422,6 +459,7 @@ Before presenting/deploying:
 ## 🎉 Congratulations!
 
 You now have a fully functional gas station finder app that:
+
 - ✅ Meets all MVP requirements from the PRD
 - ✅ Has a modern, professional UI
 - ✅ Is mobile-responsive
@@ -434,9 +472,9 @@ You now have a fully functional gas station finder app that:
 ---
 
 For questions or issues, refer to:
+
 - `API_DOCUMENTATION.md` for API details
 - `TESTING.md` for testing procedures
 - `CHEAPFUEL_README.md` for complete documentation
 
 **Happy hacking! 🚀**
-

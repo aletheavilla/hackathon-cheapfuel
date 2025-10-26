@@ -29,6 +29,7 @@
    - Select from suggestions again
 
 ### Tips
+
 - ✅ Type slowly and wait for suggestions
 - ✅ Select the most specific address available
 - ✅ Look for landmarks if you don't know the exact street
@@ -42,6 +43,7 @@
 ### Quick Setup (5 minutes)
 
 1. **Get Google Maps API Key**
+
    ```bash
    # Visit: https://console.cloud.google.com/
    # Enable: Maps JavaScript API, Places API, Geocoding API, Distance Matrix API, Maps Embed API
@@ -49,28 +51,32 @@
    ```
 
 2. **Configure Frontend**
+
    ```bash
    cd frontend
    echo "REACT_APP_GOOGLE_MAPS_API_KEY=your_key_here" > .env
    ```
 
 3. **Configure Backend**
+
    ```bash
    cd backend
    echo "GOOGLE_MAPS_API_KEY=your_key_here" >> .env
    ```
 
 4. **Install Dependencies** (if not done)
+
    ```bash
    cd frontend
    npm install
    ```
 
 5. **Run the App**
+
    ```bash
    # Terminal 1
    cd backend && python app.py
-   
+
    # Terminal 2
    cd frontend && npm start
    ```
@@ -85,11 +91,13 @@
 ### Verify Setup
 
 Run the test script:
+
 ```bash
 python test_google_maps_api.py
 ```
 
 Should see:
+
 ```
 ✓ Distance Matrix API is working!
 ✓ Places API is working!
@@ -99,16 +107,19 @@ Should see:
 ### Common Issues
 
 **"Google Maps API not loaded"**
+
 - Restart frontend: `npm start`
 - Check `.env` file exists in `frontend/`
 - Check API key is correct
 
 **Autocomplete not showing**
+
 - Enable Places API in Google Cloud Console
 - Check API key has no domain restrictions
 - Check browser console for errors
 
 **Backend geocoding fails**
+
 - Check `backend/.env` has `GOOGLE_MAPS_API_KEY`
 - Enable Geocoding API in Google Cloud Console
 
@@ -116,17 +127,20 @@ Should see:
 
 **Change country restriction:**
 Edit `frontend/src/components/AddressAutocomplete.js`:
+
 ```javascript
 componentRestrictions: { country: 'us' }, // Change 'ph' to any country
 ```
 
 **Remove country restriction:**
+
 ```javascript
 // Remove or comment out this line:
 // componentRestrictions: { country: 'ph' },
 ```
 
 **Change autocomplete types:**
+
 ```javascript
 types: ['geocode'], // or ['establishment'], ['(cities)']
 ```
@@ -172,6 +186,7 @@ types: ['geocode'], // or ['establishment'], ['(cities)']
 ### Report Issues
 
 If you find bugs, report:
+
 - Browser and version
 - What you typed
 - What suggestions appeared
@@ -198,4 +213,3 @@ If you find bugs, report:
 ---
 
 **Made with ❤️ to help drivers find the cheapest gas**
-

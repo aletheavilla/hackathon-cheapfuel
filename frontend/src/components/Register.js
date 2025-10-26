@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { register } from '../services/api';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../services/api";
 
 function Register({ onRegister }) {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    car_make: '',
-    car_model: '',
-    fuel_type: 'Regular',
-    fuel_consumption: '',
+    name: "",
+    email: "",
+    password: "",
+    car_make: "",
+    car_model: "",
+    fuel_type: "Regular",
+    fuel_consumption: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -25,20 +25,24 @@ function Register({ onRegister }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      console.log('Attempting registration with:', formData);
+      console.log("Attempting registration with:", formData);
       const response = await register(formData);
-      console.log('Registration response:', response);
+      console.log("Registration response:", response);
       onRegister(response.data.token, response.data.user);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      console.error('Registration error:', err);
-      console.error('Error response:', err.response);
-      console.error('Error message:', err.message);
-      setError(err.response?.data?.message || err.message || 'Failed to register. Please try again.');
+      console.error("Registration error:", err);
+      console.error("Error response:", err.response);
+      console.error("Error message:", err.message);
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to register. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -134,7 +138,9 @@ function Register({ onRegister }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Estimated Fuel Consumption (km/l) (Optional)</label>
+            <label className="form-label">
+              Estimated Fuel Consumption (km/l) (Optional)
+            </label>
             <input
               type="number"
               name="fuel_consumption"
@@ -148,12 +154,15 @@ function Register({ onRegister }) {
           </div>
 
           <button type="submit" className="form-button" disabled={loading}>
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
         <div className="auth-footer">
-          Already have an account? <Link to="/login" className="auth-link">Sign In</Link>
+          Already have an account?{" "}
+          <Link to="/login" className="auth-link">
+            Sign In
+          </Link>
         </div>
       </div>
     </div>
@@ -161,4 +170,3 @@ function Register({ onRegister }) {
 }
 
 export default Register;
-

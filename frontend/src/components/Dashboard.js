@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { searchStations, updateStationPrice, getRecommendation } from '../services/api';
-import AddressAutocomplete from './AddressAutocomplete';
-import ApiKeyDiagnostics from './ApiKeyDiagnostics';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  searchStations,
+  updateStationPrice,
+  getRecommendation,
+} from "../services/api";
+import AddressAutocomplete from "./AddressAutocomplete";
+import ApiKeyDiagnostics from "./ApiKeyDiagnostics";
 
 function Dashboard({ user, onLogout }) {
   const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [fuelType, setFuelType] = useState(user?.fuel_type || 'Regular');
-  const [priority, setPriority] = useState('price');
+  const [error, setError] = useState("");
+  const [fuelType, setFuelType] = useState(user?.fuel_type || "Regular");
+  const [priority, setPriority] = useState("price");
   const [location, setLocation] = useState(null);
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [selectedAddress, setSelectedAddress] = useState("");
   const [selectedStation, setSelectedStation] = useState(null);
   const [priceUpdateModal, setPriceUpdateModal] = useState(false);
-  const [newPrice, setNewPrice] = useState('');
+  const [newPrice, setNewPrice] = useState("");
   const [showMapForStation, setShowMapForStation] = useState(null);
-  const [recommendation, setRecommendation] = useState('');
+  const [recommendation, setRecommendation] = useState("");
   const [loadingRecommendation, setLoadingRecommendation] = useState(false);
   const [bannerExpanded, setBannerExpanded] = useState(false);
   const navigate = useNavigate();
@@ -41,7 +45,7 @@ function Dashboard({ user, onLogout }) {
     if (!location) return;
 
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const response = await searchStations({
@@ -53,13 +57,13 @@ function Dashboard({ user, onLogout }) {
       });
 
       setStations(response.data.stations);
-      
+
       // Fetch recommendation after stations are loaded
       if (response.data.stations.length > 0) {
         fetchRecommendation(response.data.stations, fuelType);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to fetch gas stations');
+      setError(err.response?.data?.message || "Failed to fetch gas stations");
     } finally {
       setLoading(false);
     }
@@ -70,11 +74,11 @@ function Dashboard({ user, onLogout }) {
     try {
       const response = await getRecommendation({
         stations: stationsList,
-        fuel_type: fuelTypeParam
+        fuel_type: fuelTypeParam,
       });
       setRecommendation(response.data.recommendation);
     } catch (err) {
-      console.error('Error fetching recommendation:', err);
+      console.error("Error fetching recommendation:", err);
       // Don't show error to user, just skip recommendation
     } finally {
       setLoadingRecommendation(false);
@@ -90,16 +94,16 @@ function Dashboard({ user, onLogout }) {
         setShowMapForStation(station.id);
       }
     } catch (err) {
-      console.error('Error getting navigation URL:', err);
+      console.error("Error getting navigation URL:", err);
     }
   };
 
   const handleNavigate = (station) => {
     if (!location) return;
-    
+
     // Open Google Maps with directions in a new tab
     const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${station.latitude},${station.longitude}&travelmode=driving`;
-    window.open(googleMapsUrl, '_blank');
+    window.open(googleMapsUrl, "_blank");
   };
 
   const openPriceUpdateModal = (station) => {
@@ -117,23 +121,25 @@ function Dashboard({ user, onLogout }) {
         price: parseFloat(newPrice),
       });
 
-      console.log('Price update response:', response);
-      alert('Price updated successfully!');
-      
+      console.log("Price update response:", response);
+      alert("Price updated successfully!");
+
       // Update the station price in the UI without refreshing
-      setStations(prevStations => 
-        prevStations.map(s => 
-          s.id === selectedStation.id 
-            ? { ...s, price: parseFloat(newPrice), price_source: 'USER' }
-            : s
-        )
+      setStations((prevStations) =>
+        prevStations.map((s) =>
+          s.id === selectedStation.id
+            ? { ...s, price: parseFloat(newPrice), price_source: "USER" }
+            : s,
+        ),
       );
-      
+
       setPriceUpdateModal(false);
     } catch (err) {
-      console.error('Error updating price:', err);
-      console.error('Error response:', err.response);
-      alert(`Failed to update price: ${err.response?.data?.message || err.message}`);
+      console.error("Error updating price:", err);
+      console.error("Error response:", err.response);
+      alert(
+        `Failed to update price: ${err.response?.data?.message || err.message}`,
+      );
     }
   };
 
@@ -143,7 +149,10 @@ function Dashboard({ user, onLogout }) {
       <header className="dashboard-header">
         <div className="dashboard-logo">🚗 CheapFuel</div>
         <div className="dashboard-actions">
-          <button className="btn btn-secondary" onClick={() => navigate('/profile')}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate("/profile")}
+          >
             Profile
           </button>
           <button className="btn btn-danger" onClick={onLogout}>
@@ -153,64 +162,96 @@ function Dashboard({ user, onLogout }) {
       </header>
 
       {/* Terms of Use & Privacy Policy Banner */}
-      <div style={{
-        backgroundColor: '#f3f4f6',
-        borderBottom: '1px solid #e5e7eb',
-        padding: '12px 24px',
-        cursor: 'pointer',
-        transition: 'background-color 0.2s',
-      }}
-      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
-      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
-      onClick={() => setBannerExpanded(!bannerExpanded)}
+      <div
+        style={{
+          backgroundColor: "#f3f4f6",
+          borderBottom: "1px solid #e5e7eb",
+          padding: "12px 24px",
+          cursor: "pointer",
+          transition: "background-color 0.2s",
+        }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.backgroundColor = "#e5e7eb")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.backgroundColor = "#f3f4f6")
+        }
+        onClick={() => setBannerExpanded(!bannerExpanded)}
       >
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          maxWidth: '1200px',
-          margin: '0 auto',
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontSize: '14px',
-            fontWeight: '500',
-            color: '#374151',
-          }}>
-            <span style={{
-              fontSize: '18px',
-              transition: 'transform 0.2s',
-              transform: bannerExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-              display: 'inline-block',
-            }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            maxWidth: "1200px",
+            margin: "0 auto",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              fontSize: "14px",
+              fontWeight: "500",
+              color: "#374151",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "18px",
+                transition: "transform 0.2s",
+                transform: bannerExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                display: "inline-block",
+              }}
+            >
               ▼
             </span>
             Terms Of Use & Privacy Policy
           </div>
         </div>
       </div>
-      
+
       {/* Expanded Banner Content */}
       {bannerExpanded && (
-        <div style={{
-          backgroundColor: '#ffffff',
-          borderBottom: '1px solid #e5e7eb',
-          padding: '20px 24px',
-        }}>
-          <div style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            fontSize: '14px',
-            lineHeight: '1.6',
-            color: '#6b7280',
-          }}>
-            <p>In using this app, you agree to have read and understood the following:{'\n'}</p>
-            <ul style={{ marginTop: '10px' }}>
-              <li><strong>Data Sources:</strong> The location, gas prices, and ratings are <strong>synthetic data</strong> that are either randomly generated or statically set in the 'dummy_data' folder in the code repository.</li>
-              <li><strong>Data Storage:</strong> Login credentials are only stored for a maximum of <strong>24 hours</strong> in a Supabase (PostgreSQL) database. No other PII information is stored. The only other information stored are in Google logs for debugging purposes.</li>
-              <li><strong>Data Deletion:</strong> The completely data is deleted every 12mn UTC.</li>
+        <div
+          style={{
+            backgroundColor: "#ffffff",
+            borderBottom: "1px solid #e5e7eb",
+            padding: "20px 24px",
+          }}
+        >
+          <div
+            style={{
+              maxWidth: "1200px",
+              margin: "0 auto",
+              fontSize: "14px",
+              lineHeight: "1.6",
+              color: "#6b7280",
+            }}
+          >
+            <p>
+              In using this app, you agree to have read and understood the
+              following:{"\n"}
+            </p>
+            <ul style={{ marginTop: "10px" }}>
+              <li>
+                <strong>Data Sources:</strong> The location, gas prices, and
+                ratings are <strong>synthetic data</strong> that are either
+                randomly generated or statically set in the 'dummy_data' folder
+                in the code repository.
+              </li>
+              <li>
+                <strong>Data Storage:</strong> Login credentials are only stored
+                for a maximum of <strong>24 hours</strong> in a Supabase
+                (PostgreSQL) database. No other PII information is stored. The
+                only other information stored are in Google logs for debugging
+                purposes.
+              </li>
+              <li>
+                <strong>Data Deletion:</strong> The completely data is deleted
+                every 12mn UTC.
+              </li>
             </ul>
           </div>
         </div>
@@ -222,19 +263,21 @@ function Dashboard({ user, onLogout }) {
 
           <div className="form-group">
             <label className="form-label">📍 Your Location</label>
-            <AddressAutocomplete 
+            <AddressAutocomplete
               onAddressSelect={handleAddressSelect}
               placeholder="Enter your starting address..."
             />
             {selectedAddress && (
-              <p style={{
-                marginTop: '8px',
-                fontSize: '14px',
-                color: '#10b981',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}>
+              <p
+                style={{
+                  marginTop: "8px",
+                  fontSize: "14px",
+                  color: "#10b981",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
                 ✓ {selectedAddress}
               </p>
             )}
@@ -258,20 +301,20 @@ function Dashboard({ user, onLogout }) {
               <label className="form-label">Priority</label>
               <div className="priority-buttons">
                 <button
-                  className={`priority-btn ${priority === 'price' ? 'active' : ''}`}
-                  onClick={() => setPriority('price')}
+                  className={`priority-btn ${priority === "price" ? "active" : ""}`}
+                  onClick={() => setPriority("price")}
                 >
                   💰 Cheapest Price
                 </button>
                 <button
-                  className={`priority-btn ${priority === 'time' ? 'active' : ''}`}
-                  onClick={() => setPriority('time')}
+                  className={`priority-btn ${priority === "time" ? "active" : ""}`}
+                  onClick={() => setPriority("time")}
                 >
                   ⚡ Fastest Arrival
                 </button>
                 <button
-                  className={`priority-btn ${priority === 'distance' ? 'active' : ''}`}
-                  onClick={() => setPriority('distance')}
+                  className={`priority-btn ${priority === "distance" ? "active" : ""}`}
+                  onClick={() => setPriority("distance")}
                 >
                   📍 Shortest Distance
                 </button>
@@ -282,40 +325,48 @@ function Dashboard({ user, onLogout }) {
 
         {/* Recommendation Section */}
         {!loading && stations.length > 0 && (
-          <div style={{
-            backgroundColor: '#f0fdf4',
-            border: '2px solid #86efac',
-            borderRadius: '12px',
-            padding: '20px',
-            marginBottom: '24px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-          }}>
-            <h3 style={{
-              margin: '0 0 12px 0',
-              color: '#166534',
-              fontSize: '18px',
-              fontWeight: '600',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
+          <div
+            style={{
+              backgroundColor: "#f0fdf4",
+              border: "2px solid #86efac",
+              borderRadius: "12px",
+              padding: "20px",
+              marginBottom: "24px",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h3
+              style={{
+                margin: "0 0 12px 0",
+                color: "#166534",
+                fontSize: "18px",
+                fontWeight: "600",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
               💡 Recommendation
             </h3>
             {loadingRecommendation ? (
-              <div style={{
-                color: '#65a30d',
-                fontSize: '14px',
-                fontStyle: 'italic'
-              }}>
+              <div
+                style={{
+                  color: "#65a30d",
+                  fontSize: "14px",
+                  fontStyle: "italic",
+                }}
+              >
                 ⏳ Getting personalized recommendation...
               </div>
             ) : recommendation ? (
-              <p style={{
-                margin: 0,
-                color: '#166534',
-                fontSize: '16px',
-                lineHeight: '1.6'
-              }}>
+              <p
+                style={{
+                  margin: 0,
+                  color: "#166534",
+                  fontSize: "16px",
+                  lineHeight: "1.6",
+                }}
+              >
                 {recommendation}
               </p>
             ) : null}
@@ -328,7 +379,9 @@ function Dashboard({ user, onLogout }) {
           <div className="results-header">
             <h2 className="results-title">Nearby Stations</h2>
             {stations.length > 0 && (
-              <span className="results-count">{stations.length} stations found</span>
+              <span className="results-count">
+                {stations.length} stations found
+              </span>
             )}
           </div>
 
@@ -350,10 +403,16 @@ function Dashboard({ user, onLogout }) {
                       <p className="station-address">{station.address}</p>
                     </div>
                     <div className="station-price">
-                      <div className="price-amount">₱{station.price.toFixed(2)}</div>
+                      <div className="price-amount">
+                        ₱{station.price.toFixed(2)}
+                      </div>
                       <div className="price-label">per liter</div>
-                      <span className={`price-source ${station.price_source.toLowerCase()}`}>
-                        {station.price_source === 'DOE' ? 'DOE Baseline' : 'User Updated'}
+                      <span
+                        className={`price-source ${station.price_source.toLowerCase()}`}
+                      >
+                        {station.price_source === "DOE"
+                          ? "DOE Baseline"
+                          : "User Updated"}
                       </span>
                     </div>
                   </div>
@@ -370,7 +429,10 @@ function Dashboard({ user, onLogout }) {
                     {station.rating && (
                       <div className="detail-item">
                         <span className="detail-icon">⭐</span>
-                        <span>{station.rating} ({station.user_ratings_total} reviews)</span>
+                        <span>
+                          {station.rating} ({station.user_ratings_total}{" "}
+                          reviews)
+                        </span>
                       </div>
                     )}
                   </div>
@@ -380,7 +442,9 @@ function Dashboard({ user, onLogout }) {
                       className="btn btn-primary"
                       onClick={() => handleToggleMap(station)}
                     >
-                      {showMapForStation === station.id ? '❌ Close Map' : '🗺️ Show Map'}
+                      {showMapForStation === station.id
+                        ? "❌ Close Map"
+                        : "🗺️ Show Map"}
                     </button>
                     <button
                       className="btn btn-primary"
@@ -398,20 +462,22 @@ function Dashboard({ user, onLogout }) {
 
                   {/* Embedded Map */}
                   {showMapForStation === station.id && location && (
-                    <div style={{
-                      marginTop: '16px',
-                      width: '100%',
-                      height: '400px',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      border: '2px solid #e5e7eb'
-                    }}>
+                    <div
+                      style={{
+                        marginTop: "16px",
+                        width: "100%",
+                        height: "400px",
+                        borderRadius: "12px",
+                        overflow: "hidden",
+                        border: "2px solid #e5e7eb",
+                      }}
+                    >
                       <iframe
                         width="100%"
                         height="100%"
                         frameBorder="0"
                         style={{ border: 0 }}
-                        src={`https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY'}&origin=${location.latitude},${location.longitude}&destination=${station.latitude},${station.longitude}&mode=driving`}
+                        src={`https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "YOUR_GOOGLE_MAPS_API_KEY"}&origin=${location.latitude},${location.longitude}&destination=${station.latitude},${station.longitude}&mode=driving`}
                         allowFullScreen
                         title={`Map to ${station.name}`}
                       />
@@ -426,27 +492,31 @@ function Dashboard({ user, onLogout }) {
 
       {/* Price Update Modal */}
       {priceUpdateModal && selectedStation && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-        }}>
-          <div style={{
-            backgroundColor: 'white',
-            borderRadius: '16px',
-            padding: '32px',
-            maxWidth: '400px',
-            width: '90%',
-          }}>
-            <h3 style={{ marginBottom: '20px' }}>Update Price</h3>
-            <p style={{ marginBottom: '16px', color: '#6b7280' }}>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              borderRadius: "16px",
+              padding: "32px",
+              maxWidth: "400px",
+              width: "90%",
+            }}
+          >
+            <h3 style={{ marginBottom: "20px" }}>Update Price</h3>
+            <p style={{ marginBottom: "16px", color: "#6b7280" }}>
               {selectedStation.name}
             </p>
             <div className="form-group">
@@ -460,7 +530,7 @@ function Dashboard({ user, onLogout }) {
                 placeholder="65.50"
               />
             </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+            <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
               <button
                 className="btn btn-primary"
                 onClick={handleUpdatePrice}
@@ -481,59 +551,71 @@ function Dashboard({ user, onLogout }) {
       )}
 
       {/* Footer */}
-      <footer style={{
-        backgroundColor: '#1f2937',
-        color: '#e5e7eb',
-        padding: '24px 32px',
-        marginTop: '48px',
-        borderTop: '4px solid #3b82f6',
-      }}>
-        <div style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: '20px',
-          flexWrap: 'wrap',
-        }}>
-          <div style={{
-            fontSize: '14px',
-            lineHeight: '1.6',
-            flex: '1',
-            minWidth: '300px',
-          }}>
-            This demo app was built during the{' '}
-            <a 
+      <footer
+        style={{
+          backgroundColor: "#1f2937",
+          color: "#e5e7eb",
+          padding: "24px 32px",
+          marginTop: "48px",
+          borderTop: "4px solid #3b82f6",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "20px",
+            flexWrap: "wrap",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "14px",
+              lineHeight: "1.6",
+              flex: "1",
+              minWidth: "300px",
+            }}
+          >
+            This demo app was built during the{" "}
+            <a
               href="https://www.eventbrite.com/e/pie-ai-manila-ai-hives-lemnl-vibe-hack-20-ai-and-data-hackathon-tickets-1838801327269"
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                color: '#3b82f6',
-                textDecoration: 'underline',
-                fontWeight: '500',
+                color: "#3b82f6",
+                textDecoration: "underline",
+                fontWeight: "500",
               }}
             >
               Pie & AI: Manila hackathon
-            </a>{' '}
+            </a>{" "}
             through the joint effort of Thea Villa, Werald Co, and Paolo.
           </div>
           <button
-            onClick={() => window.open('https://www.aletheavilla.com/contact-me', '_blank')}
+            onClick={() =>
+              window.open("https://www.aletheavilla.com/contact-me", "_blank")
+            }
             style={{
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '12px 24px',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s',
-              whiteSpace: 'nowrap',
+              backgroundColor: "#3b82f6",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              padding: "12px 24px",
+              fontSize: "14px",
+              fontWeight: "600",
+              cursor: "pointer",
+              transition: "background-color 0.2s",
+              whiteSpace: "nowrap",
             }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#2563eb")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#3b82f6")
+            }
           >
             👋 Say Hi!
           </button>
@@ -544,4 +626,3 @@ function Dashboard({ user, onLogout }) {
 }
 
 export default Dashboard;
-

@@ -5,6 +5,7 @@
 ### 1. Backend Testing
 
 #### Setup
+
 ```bash
 cd backend
 source venv/bin/activate
@@ -14,12 +15,15 @@ python app.py
 Server should start on `http://localhost:5000`
 
 #### Health Check
+
 ```bash
 curl http://localhost:5000/api/health
 ```
+
 Expected: `{"status":"healthy","timestamp":"..."}`
 
 #### Test User Registration
+
 ```bash
 curl -X POST http://localhost:5000/api/register \
   -H "Content-Type: application/json" \
@@ -31,9 +35,11 @@ curl -X POST http://localhost:5000/api/register \
     "fuel_type": "Regular"
   }'
 ```
+
 Expected: Returns token and user object
 
 #### Test Login
+
 ```bash
 curl -X POST http://localhost:5000/api/login \
   -H "Content-Type: application/json" \
@@ -42,9 +48,11 @@ curl -X POST http://localhost:5000/api/login \
     "password": "test123"
   }'
 ```
+
 Save the token from response for next steps.
 
 #### Test Search (replace YOUR_TOKEN)
+
 ```bash
 curl -X POST http://localhost:5000/api/stations/search \
   -H "Content-Type: application/json" \
@@ -58,6 +66,7 @@ curl -X POST http://localhost:5000/api/stations/search \
 ```
 
 #### Seed Sample Prices
+
 ```bash
 curl -X POST http://localhost:5000/api/admin/seed-prices
 ```
@@ -67,6 +76,7 @@ curl -X POST http://localhost:5000/api/admin/seed-prices
 ### 2. Frontend Testing
 
 #### Setup
+
 ```bash
 cd frontend
 npm start
@@ -75,6 +85,7 @@ npm start
 App opens at `http://localhost:3000`
 
 #### Test Registration Flow
+
 1. Click "Sign Up"
 2. Fill in:
    - Name: "Test User"
@@ -86,12 +97,14 @@ App opens at `http://localhost:3000`
 4. Should redirect to dashboard
 
 #### Test Login Flow
+
 1. Logout if logged in
 2. Click "Sign In"
 3. Enter credentials
 4. Should redirect to dashboard
 
 #### Test Station Search
+
 1. Allow location permissions when prompted
 2. Verify fuel type is set to your preference
 3. Try each priority option:
@@ -101,7 +114,9 @@ App opens at `http://localhost:3000`
 4. Verify results update and re-sort
 
 #### Test Station Details
+
 For each station card, verify:
+
 - Station name displays
 - Address shows correctly
 - Price is visible with ₱ symbol
@@ -111,11 +126,13 @@ For each station card, verify:
 - Star rating (if available) appears
 
 #### Test Navigation
+
 1. Click "🗺️ Navigate" on any station
 2. Google Maps should open in new tab
 3. Directions should be pre-loaded
 
 #### Test Price Update
+
 1. Click "💵 Update Price" on a station
 2. Modal should appear
 3. Enter new price (e.g., "57.50")
@@ -125,6 +142,7 @@ For each station card, verify:
 7. Price source badge should change to "User"
 
 #### Test Profile Management
+
 1. Click "Profile" button
 2. Update name or car model
 3. Change fuel type
@@ -140,14 +158,17 @@ For each station card, verify:
 Test on different screen sizes:
 
 #### Desktop (1920x1080)
+
 - Layout should be wide with comfortable spacing
 - Station cards should display side-by-side info
 
 #### Tablet (768x1024)
+
 - Priority buttons should wrap nicely
 - Station cards should be readable
 
 #### Mobile (375x667)
+
 - Header should stack vertically
 - Form inputs should be full-width
 - Station cards should stack information
@@ -159,28 +180,33 @@ Test on different screen sizes:
 ### 4. Edge Cases & Error Handling
 
 #### Test Without API Key
+
 1. Remove `GOOGLE_MAPS_API_KEY` from backend/.env
 2. Restart backend
 3. Try searching stations
 4. Should get empty results or fallback to basic distance
 
 #### Test With Wrong Credentials
+
 1. Try logging in with wrong password
 2. Should show error message
 3. Try registering with existing email
 4. Should show "Email already registered"
 
 #### Test Without Location Permission
+
 1. Deny location when browser asks
 2. App should default to Manila coordinates
 3. Search should still work
 
 #### Test Offline Backend
+
 1. Stop backend server
 2. Try using frontend
 3. Should show connection errors
 
 #### Test Invalid Price Update
+
 1. Try updating price with empty value
 2. Try with negative number
 3. Should handle gracefully
@@ -190,11 +216,13 @@ Test on different screen sizes:
 ### 5. Performance Testing
 
 #### Load Time
+
 - Initial page load should be under 2 seconds
 - Station search should complete within 3 seconds
 - API calls should respond within 1 second
 
 #### Multiple Stations
+
 1. Search in a dense area (e.g., Makati CBD)
 2. Should handle 20+ stations smoothly
 3. Scrolling should be smooth
@@ -205,6 +233,7 @@ Test on different screen sizes:
 ### 6. Data Integrity Testing
 
 #### Price Source Logic
+
 1. Search for stations (all show DOE prices)
 2. Update a price for a station
 3. Search again
@@ -212,6 +241,7 @@ Test on different screen sizes:
 5. Others still show DOE
 
 #### Token Persistence
+
 1. Login
 2. Close browser
 3. Reopen app
@@ -226,6 +256,7 @@ Test on different screen sizes:
 ## Automated Testing (Future)
 
 ### Backend Unit Tests
+
 ```python
 # test_app.py
 import pytest
@@ -255,12 +286,13 @@ def test_register_user(client):
 ```
 
 ### Frontend Tests
+
 ```javascript
 // App.test.js
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders login page', () => {
+test("renders login page", () => {
   render(<App />);
   const linkElement = screen.getByText(/CheapFuel/i);
   expect(linkElement).toBeInTheDocument();
@@ -320,7 +352,7 @@ Any errors from browser console or terminal
 ✅ User can report price updates  
 ✅ Price sources are visually distinct (DOE vs User)  
 ✅ App is mobile-responsive  
-✅ Profile management works  
+✅ Profile management works
 
 ---
 
@@ -343,4 +375,3 @@ Any errors from browser console or terminal
 - [ ] Touch targets are 44x44px minimum
 - [ ] Form labels are present
 - [ ] Error messages are clear
-

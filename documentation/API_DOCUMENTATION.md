@@ -7,6 +7,7 @@ Base URL: `http://localhost:5000/api`
 All endpoints (except `/register`, `/login`, and `/health`) require JWT authentication.
 
 Include the token in the `Authorization` header:
+
 ```
 Authorization: Bearer <your_jwt_token>
 ```
@@ -18,9 +19,11 @@ Authorization: Bearer <your_jwt_token>
 ### Health Check
 
 #### `GET /api/health`
+
 Check if the API is running.
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -33,9 +36,11 @@ Check if the API is running.
 ### Authentication Endpoints
 
 #### `POST /api/register`
+
 Create a new user account.
 
 **Request Body:**
+
 ```json
 {
   "name": "John Doe",
@@ -47,6 +52,7 @@ Create a new user account.
 ```
 
 **Response (201):**
+
 ```json
 {
   "message": "User registered successfully",
@@ -62,15 +68,18 @@ Create a new user account.
 ```
 
 **Errors:**
+
 - `400` - Missing required fields
 - `400` - Email already registered
 
 ---
 
 #### `POST /api/login`
+
 Login with existing credentials.
 
 **Request Body:**
+
 ```json
 {
   "email": "john@example.com",
@@ -79,6 +88,7 @@ Login with existing credentials.
 ```
 
 **Response (200):**
+
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -93,6 +103,7 @@ Login with existing credentials.
 ```
 
 **Errors:**
+
 - `400` - Missing credentials
 - `401` - Invalid credentials
 
@@ -101,9 +112,11 @@ Login with existing credentials.
 ### User Profile Endpoints
 
 #### `GET /api/profile`
+
 Get current user's profile. Requires authentication.
 
 **Response (200):**
+
 ```json
 {
   "id": 1,
@@ -115,14 +128,17 @@ Get current user's profile. Requires authentication.
 ```
 
 **Errors:**
+
 - `401` - Token missing or invalid
 
 ---
 
 #### `PUT /api/profile`
+
 Update current user's profile. Requires authentication.
 
 **Request Body:**
+
 ```json
 {
   "name": "John Smith",
@@ -132,6 +148,7 @@ Update current user's profile. Requires authentication.
 ```
 
 **Response (200):**
+
 ```json
 {
   "message": "Profile updated successfully",
@@ -146,6 +163,7 @@ Update current user's profile. Requires authentication.
 ```
 
 **Errors:**
+
 - `401` - Token missing or invalid
 
 ---
@@ -153,9 +171,11 @@ Update current user's profile. Requires authentication.
 ### Gas Station Endpoints
 
 #### `POST /api/stations/search`
+
 Search for nearby gas stations. Requires authentication.
 
 **Request Body:**
+
 ```json
 {
   "latitude": 14.5995,
@@ -167,6 +187,7 @@ Search for nearby gas stations. Requires authentication.
 ```
 
 **Parameters:**
+
 - `latitude` (required): User's latitude
 - `longitude` (required): User's longitude
 - `fuel_type` (optional): "Regular", "Premium", or "Diesel" (defaults to user's preference)
@@ -174,6 +195,7 @@ Search for nearby gas stations. Requires authentication.
 - `radius` (optional): Search radius in meters (default: 5000)
 
 **Response (200):**
+
 ```json
 {
   "stations": [
@@ -182,12 +204,12 @@ Search for nearby gas stations. Requires authentication.
       "place_id": "ChIJ...",
       "name": "Shell Gas Station",
       "address": "123 Main St, Makati City",
-      "latitude": 14.5500,
-      "longitude": 121.0300,
+      "latitude": 14.55,
+      "longitude": 121.03,
       "brand": "Shell",
       "distance_km": 2.5,
       "duration_min": 8,
-      "price": 55.50,
+      "price": 55.5,
       "price_source": "DOE",
       "price_updated_at": "2025-10-25T06:00:00.000000",
       "rating": 4.5,
@@ -201,18 +223,22 @@ Search for nearby gas stations. Requires authentication.
 ```
 
 **Errors:**
+
 - `400` - Location required
 - `401` - Token missing or invalid
 
 ---
 
 #### `POST /api/stations/:id/price`
+
 Update the price for a gas station. Requires authentication.
 
 **URL Parameters:**
+
 - `id`: Station ID
 
 **Request Body:**
+
 ```json
 {
   "fuel_type": "Regular",
@@ -221,6 +247,7 @@ Update the price for a gas station. Requires authentication.
 ```
 
 **Response (201):**
+
 ```json
 {
   "message": "Price updated successfully",
@@ -235,6 +262,7 @@ Update the price for a gas station. Requires authentication.
 ```
 
 **Errors:**
+
 - `400` - Fuel type and price required
 - `401` - Token missing or invalid
 - `404` - Station not found
@@ -242,25 +270,29 @@ Update the price for a gas station. Requires authentication.
 ---
 
 #### `GET /api/stations/:id/navigate`
+
 Get navigation URL for a gas station. Requires authentication.
 
 **URL Parameters:**
+
 - `id`: Station ID
 
 **Response (200):**
+
 ```json
 {
   "navigation_url": "https://www.google.com/maps/dir/?api=1&destination=14.5500,121.0300",
   "station": {
     "name": "Shell Gas Station",
     "address": "123 Main St, Makati City",
-    "latitude": 14.5500,
-    "longitude": 121.0300
+    "latitude": 14.55,
+    "longitude": 121.03
   }
 }
 ```
 
 **Errors:**
+
 - `401` - Token missing or invalid
 - `404` - Station not found
 
@@ -269,9 +301,11 @@ Get navigation URL for a gas station. Requires authentication.
 ### Admin Endpoints
 
 #### `POST /api/admin/seed-prices`
+
 Seed the database with sample DOE baseline prices.
 
 **Response (200):**
+
 ```json
 {
   "message": "Prices seeded successfully"
@@ -304,6 +338,7 @@ All error responses follow this format:
 ## Fuel Types
 
 Supported fuel types:
+
 - `Regular` - Regular gasoline
 - `Premium` - Premium gasoline
 - `Diesel` - Diesel fuel
@@ -313,6 +348,7 @@ Supported fuel types:
 ## Priority Options
 
 When searching for stations:
+
 - `price` - Sort by lowest price first
 - `time` - Sort by fastest arrival time (considering traffic)
 - `distance` - Sort by shortest distance
@@ -322,6 +358,7 @@ When searching for stations:
 ## Price Sources
 
 Prices can come from two sources:
+
 - `DOE` - Department of Energy baseline price (updated weekly)
 - `USER` - Community-submitted price (valid for 7 days)
 
@@ -332,6 +369,7 @@ User-submitted prices take precedence over DOE prices when available.
 ## Rate Limiting
 
 Google Maps API has usage limits. If you exceed them, you may receive:
+
 - Limited results
 - Fallback to basic distance calculations
 - Error messages about API quota
@@ -341,6 +379,7 @@ Google Maps API has usage limits. If you exceed them, you may receive:
 ## Testing with cURL
 
 ### Register a user:
+
 ```bash
 curl -X POST http://localhost:5000/api/register \
   -H "Content-Type: application/json" \
@@ -353,6 +392,7 @@ curl -X POST http://localhost:5000/api/register \
 ```
 
 ### Login:
+
 ```bash
 curl -X POST http://localhost:5000/api/login \
   -H "Content-Type: application/json" \
@@ -363,6 +403,7 @@ curl -X POST http://localhost:5000/api/login \
 ```
 
 ### Search stations (replace TOKEN):
+
 ```bash
 curl -X POST http://localhost:5000/api/stations/search \
   -H "Content-Type: application/json" \
@@ -376,7 +417,7 @@ curl -X POST http://localhost:5000/api/stations/search \
 ```
 
 ### Seed prices:
+
 ```bash
 curl -X POST http://localhost:5000/api/admin/seed-prices
 ```
-

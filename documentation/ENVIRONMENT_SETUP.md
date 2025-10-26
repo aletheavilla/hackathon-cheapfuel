@@ -15,6 +15,7 @@ ENVFILE
 ```
 
 **Or edit manually:**
+
 ```bash
 cd frontend
 nano .env
@@ -24,6 +25,7 @@ nano .env
 ```
 
 Then add:
+
 ```
 REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
 ```
@@ -31,12 +33,14 @@ REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
 ## Backend Environment Variables
 
 Check if backend `.env` exists:
+
 ```bash
 cd backend
 ls -la .env
 ```
 
 If it doesn't exist, create it:
+
 ```bash
 cd backend
 cat > .env << 'ENVFILE'
@@ -52,6 +56,7 @@ ENVFILE
 ```
 
 **Or add to existing backend `.env`:**
+
 ```bash
 cd backend
 echo "GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here" >> .env
@@ -60,11 +65,13 @@ echo "GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here" >> .env
 ## Verify Configuration
 
 **Check frontend `.env`:**
+
 ```bash
 cat frontend/.env
 ```
 
 **Check backend `.env`:**
+
 ```bash
 cat backend/.env
 ```
@@ -77,6 +84,7 @@ After creating the files, replace the placeholder values with your actual API ke
 2. Edit the `.env` files and replace `your_google_maps_api_key_here` with your actual key
 
 **Example (macOS/Linux):**
+
 ```bash
 cd frontend
 sed -i.bak 's/your_google_maps_api_key_here/AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/' .env
@@ -104,11 +112,13 @@ npm start
 ## Verify It's Working
 
 Run the test script:
+
 ```bash
 python test_google_maps_api.py
 ```
 
 Should see all tests pass:
+
 ```
 ✓ Distance Matrix API is working!
 ✓ Places API is working!
@@ -126,6 +136,7 @@ Should see all tests pass:
 ## Troubleshooting
 
 **Frontend can't find API key:**
+
 ```bash
 # Check if .env exists
 ls -la frontend/.env
@@ -142,6 +153,7 @@ npm start
 ```
 
 **Backend can't find API key:**
+
 ```bash
 # Check if .env exists
 ls -la backend/.env
@@ -158,6 +170,7 @@ python app.py
 ```
 
 **API key in .env but not loading:**
+
 ```bash
 # Make sure there are no extra spaces
 # Make sure there are no quotes around the key
@@ -220,6 +233,7 @@ chmod +x setup_env.sh
 ```
 
 Then run:
+
 ```bash
 ./setup_env.sh
 ```
@@ -229,12 +243,14 @@ Then run:
 If you prefer to edit files directly:
 
 **Frontend .env:**
+
 1. Navigate to `frontend/` directory
 2. Create file named `.env` (note the leading dot)
 3. Add: `REACT_APP_GOOGLE_MAPS_API_KEY=your_actual_key`
 4. Save and close
 
 **Backend .env:**
+
 1. Navigate to `backend/` directory
 2. Create or edit file named `.env`
 3. Add: `GOOGLE_MAPS_API_KEY=your_actual_key`
@@ -249,4 +265,3 @@ After setting up environment variables:
 3. ✅ Start the frontend: `cd frontend && npm start`
 4. ✅ Open http://localhost:3000
 5. ✅ Try the address autocomplete feature
-
