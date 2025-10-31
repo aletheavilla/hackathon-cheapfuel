@@ -5,7 +5,7 @@ Quick test to check if Google Maps API key works for frontend (Maps JavaScript A
 import requests
 import sys
 
-API_KEY = "AIzaSyBSvMN1ge_XXKzq2lSG1TBhuQrXKGaH-n8"
+API_KEY = os.getenv("REACT_APP_GOOGLE_MAPS_API_KEY")
 
 
 def test_maps_javascript_api():
