@@ -12,7 +12,7 @@ fi
 
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then
-    echo "❌ Node.js is not installed. Please install Node.js 16 or higher."
+    echo "❌ Node.js is not installed. Please install Node.js 18 or higher."
     exit 1
 fi
 
@@ -70,10 +70,12 @@ else
     echo "Node modules already installed"
 fi
 
-# Create .env if it doesn't exist
-if [ ! -f ".env" ]; then
-    echo "REACT_APP_API_URL=http://localhost:5000/api" > .env
-    echo "✅ Frontend .env file created"
+# Create .env.local if it doesn't exist (Next.js)
+if [ ! -f ".env.local" ]; then
+    echo "NEXT_PUBLIC_API_URL=http://localhost:8080/api" > .env.local
+    echo "# Add your public Google Maps key (client-side)" >> .env.local
+    echo "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY" >> .env.local
+    echo "✅ Frontend .env.local file created"
 fi
 
 cd ..
@@ -83,7 +85,7 @@ echo "✅ Setup complete!"
 echo ""
 echo "To run the application:"
 echo "  1. Backend:  cd backend && source venv/bin/activate && python app.py"
-echo "  2. Frontend: cd frontend && npm start"
+echo "  2. Frontend: cd frontend && npm run dev"
 echo ""
 echo "Or use the run script: ./run.sh"
 

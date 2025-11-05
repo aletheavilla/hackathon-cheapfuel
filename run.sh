@@ -24,10 +24,10 @@ cd ..
 # Wait a bit for backend to start
 sleep 3
 
-# Start frontend
+# Start frontend (Next.js dev)
 echo "Starting Frontend Server..."
 cd frontend
-npm start &
+npm run dev &
 FRONTEND_PID=$!
 cd ..
 
