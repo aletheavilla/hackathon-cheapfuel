@@ -2,7 +2,7 @@ import os
 import json
 import requests
 from datetime import datetime, timedelta
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -774,6 +774,17 @@ def geocode_address(current_user):
 @app.route("/api/health", methods=["GET"])
 def health_check():
     return jsonify({"status": "healthy", "timestamp": datetime.utcnow().isoformat()})
+
+
+# Serve React frontend
+FRONTEND_BUILD = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "build")
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_frontend(path):
+    if path and os.path.exists(os.path.join(FRONTEND_BUILD, path)):
+        return send_from_directory(FRONTEND_BUILD, path)
+    return send_from_directory(FRONTEND_BUILD, "index.html")
 
 
 # Initialize database
