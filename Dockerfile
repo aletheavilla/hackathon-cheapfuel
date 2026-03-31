@@ -5,7 +5,8 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 RUN python -m venv .venv
-COPY pyproject.toml ./
+COPY pyproject.toml README.md ./
+COPY backend ./backend
 RUN .venv/bin/pip install .
 FROM python:3.8-slim
 WORKDIR /app
