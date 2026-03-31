@@ -14,7 +14,7 @@ from openai import OpenAI
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
 CORS(app)
 
 # Configuration
