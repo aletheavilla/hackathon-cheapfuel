@@ -26,6 +26,13 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+# Default seeded user configuration (override in environment if needed)
+DEFAULT_SEEDED_USER_EMAIL = os.getenv("DEFAULT_SEEDED_USER_EMAIL", "test@email.com")
+DEFAULT_SEEDED_USER_PASSWORD = os.getenv(
+    "DEFAULT_SEEDED_USER_PASSWORD", "oh-my-g@s-2026"
+)
+DEFAULT_SEEDED_USER_NAME = os.getenv("DEFAULT_SEEDED_USER_NAME", "Juan Dela Cruz")
+
 
 def parse_optional_float(value):
     """Normalize optional numeric input from JSON payloads.
@@ -743,6 +750,20 @@ def serve_frontend(path):
 # Initialize database
 with app.app_context():
     db.create_all()
+
+    # Seed a deterministic test user for deployments and demos.
+    if DEFAULT_SEEDED_USER_EMAIL and DEFAULT_SEEDED_USER_PASSWORD:
+        existing_user = User.query.filter_by(email=DEFAULT_SEEDED_USER_EMAIL).first()
+        if not existing_user:
+            seeded_user = User(
+                email=DEFAULT_SEEDED_USER_EMAIL,
+                password_hash=generate_password_hash(DEFAULT_SEEDED_USER_PASSWORD),
+                name=DEFAULT_SEEDED_USER_NAME,
+                fuel_type="Regular",
+            )
+            db.session.add(seeded_user)
+            db.session.commit()
+            print(f"Seeded default user: {DEFAULT_SEEDED_USER_EMAIL}")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8080)
