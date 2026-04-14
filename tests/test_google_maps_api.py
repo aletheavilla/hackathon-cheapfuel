@@ -7,6 +7,7 @@ Tests both Distance Matrix API and Places API which are used by the CheapFuel ap
 import os
 import sys
 import requests
+import pytest
 from dotenv import load_dotenv
 
 
@@ -30,6 +31,15 @@ def print_status(message, status="info"):
         print(f"{Colors.YELLOW}⚠ {message}{Colors.ENDC}")
     else:
         print(f"{Colors.BLUE}ℹ {message}{Colors.ENDC}")
+
+
+@pytest.fixture
+def api_key():
+    """Load Google Maps API key for tests."""
+    key = os.getenv("GOOGLE_MAPS_API_KEY")
+    if not key:
+        pytest.skip("GOOGLE_MAPS_API_KEY is not set")
+    return key
 
 
 def test_distance_matrix_api(api_key):
@@ -57,12 +67,12 @@ def test_distance_matrix_api(api_key):
                     duration = element["duration"]["text"]
                     print_status(f"Distance Matrix API is working!", "success")
                     print(f"  Example: Manila to Makati - {distance}, {duration}")
-                    return True
+                    assert True
                 else:
                     print_status(
                         f"API returned element status: {element['status']}", "error"
                     )
-                    return False
+                    pytest.fail(f"Distance Matrix element status: {element['status']}")
             elif data.get("status") == "REQUEST_DENIED":
                 print_status(
                     f"Request denied: {data.get('error_message', 'Unknown error')}",
@@ -72,23 +82,23 @@ def test_distance_matrix_api(api_key):
                     "Check if Distance Matrix API is enabled in Google Cloud Console",
                     "warning",
                 )
-                return False
+                pytest.fail("Distance Matrix API request denied")
             else:
                 print_status(f"API returned status: {data.get('status')}", "error")
                 if "error_message" in data:
                     print(f"  Error: {data['error_message']}")
-                return False
+                pytest.fail(f"Distance Matrix API returned status: {data.get('status')}")
         else:
             print_status(f"HTTP Error {response.status_code}", "error")
             print(f"  Response: {data}")
-            return False
+            pytest.fail(f"Distance Matrix HTTP status: {response.status_code}")
 
     except requests.exceptions.RequestException as e:
         print_status(f"Network error: {str(e)}", "error")
-        return False
+        pytest.fail(f"Distance Matrix network error: {str(e)}")
     except Exception as e:
         print_status(f"Unexpected error: {str(e)}", "error")
-        return False
+        pytest.fail(f"Distance Matrix unexpected error: {str(e)}")
 
 
 def test_places_api(api_key):
@@ -115,7 +125,7 @@ def test_places_api(api_key):
                 if results:
                     print(f"  Example station: {results[0]['name']}")
                     print(f"    Address: {results[0].get('vicinity', 'N/A')}")
-                return True
+                assert True
             elif data.get("status") == "REQUEST_DENIED":
                 print_status(
                     f"Request denied: {data.get('error_message', 'Unknown error')}",
@@ -124,23 +134,23 @@ def test_places_api(api_key):
                 print_status(
                     "Check if Places API is enabled in Google Cloud Console", "warning"
                 )
-                return False
+                pytest.fail("Places API request denied")
             else:
                 print_status(f"API returned status: {data.get('status')}", "error")
                 if "error_message" in data:
                     print(f"  Error: {data['error_message']}")
-                return False
+                pytest.fail(f"Places API returned status: {data.get('status')}")
         else:
             print_status(f"HTTP Error {response.status_code}", "error")
             print(f"  Response: {data}")
-            return False
+            pytest.fail(f"Places API HTTP status: {response.status_code}")
 
     except requests.exceptions.RequestException as e:
         print_status(f"Network error: {str(e)}", "error")
-        return False
+        pytest.fail(f"Places API network error: {str(e)}")
     except Exception as e:
         print_status(f"Unexpected error: {str(e)}", "error")
-        return False
+        pytest.fail(f"Places API unexpected error: {str(e)}")
 
 
 def test_maps_embed_api(api_key):
@@ -156,17 +166,17 @@ def test_maps_embed_api(api_key):
         if response.status_code == 200:
             print_status("Maps Embed API key format is valid!", "success")
             print(f"  Frontend will be able to display embedded maps")
-            return True
+            assert True
         else:
             print_status(
                 f"Maps Embed API returned status {response.status_code}", "warning"
             )
             print_status("This may work in browser but not via script request", "info")
-            return True  # Still return True as this might be expected
+            assert True  # Still considered pass as script checks are limited
     except Exception as e:
         print_status("Could not verify Embed API directly (this is normal)", "info")
         print_status("The API key should work in browser if other tests pass", "info")
-        return True  # Return True since we can't really test Embed API programmatically
+        assert True  # Cannot reliably test Embed API programmatically
 
 
 def main():

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   searchStations,
   updateStationPrice,
-  getRecommendation,
 } from "../services/api";
 import AddressAutocomplete from "./AddressAutocomplete";
 import ApiKeyDiagnostics from "./ApiKeyDiagnostics";
@@ -20,8 +19,6 @@ function Dashboard({ user, onLogout }) {
   const [priceUpdateModal, setPriceUpdateModal] = useState(false);
   const [newPrice, setNewPrice] = useState("");
   const [showMapForStation, setShowMapForStation] = useState(null);
-  const [recommendation, setRecommendation] = useState("");
-  const [loadingRecommendation, setLoadingRecommendation] = useState(false);
   const [bannerExpanded, setBannerExpanded] = useState(false);
   const navigate = useNavigate();
 
@@ -57,31 +54,10 @@ function Dashboard({ user, onLogout }) {
       });
 
       setStations(response.data.stations);
-
-      // Fetch recommendation after stations are loaded
-      if (response.data.stations.length > 0) {
-        fetchRecommendation(response.data.stations, fuelType);
-      }
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch gas stations");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchRecommendation = async (stationsList, fuelTypeParam) => {
-    setLoadingRecommendation(true);
-    try {
-      const response = await getRecommendation({
-        stations: stationsList,
-        fuel_type: fuelTypeParam,
-      });
-      setRecommendation(response.data.recommendation);
-    } catch (err) {
-      console.error("Error fetching recommendation:", err);
-      // Don't show error to user, just skip recommendation
-    } finally {
-      setLoadingRecommendation(false);
     }
   };
 
@@ -322,56 +298,6 @@ function Dashboard({ user, onLogout }) {
             </div>
           </div>
         </div>
-
-        {/* Recommendation Section */}
-        {!loading && stations.length > 0 && (
-          <div
-            style={{
-              backgroundColor: "#f0fdf4",
-              border: "2px solid #86efac",
-              borderRadius: "12px",
-              padding: "20px",
-              marginBottom: "24px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 12px 0",
-                color: "#166534",
-                fontSize: "18px",
-                fontWeight: "600",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
-            >
-              💡 Recommendation
-            </h3>
-            {loadingRecommendation ? (
-              <div
-                style={{
-                  color: "#65a30d",
-                  fontSize: "14px",
-                  fontStyle: "italic",
-                }}
-              >
-                ⏳ Getting personalized recommendation...
-              </div>
-            ) : recommendation ? (
-              <p
-                style={{
-                  margin: 0,
-                  color: "#166534",
-                  fontSize: "16px",
-                  lineHeight: "1.6",
-                }}
-              >
-                {recommendation}
-              </p>
-            ) : null}
-          </div>
-        )}
 
         {error && <div className="error-message">{error}</div>}
 

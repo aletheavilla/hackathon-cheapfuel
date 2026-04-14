@@ -1,195 +1,182 @@
-import React, { useRef, useEffect, useState } from "react";
-import { useJsApiLoader } from "@react-google-maps/api";
+import React, { useEffect, useRef, useState } from "react";
 
-const libraries = ["places"];
+const AUTOCOMPLETE_ENDPOINT = "https://places.googleapis.com/v1/places:autocomplete";
+const PLACE_DETAILS_ENDPOINT = "https://places.googleapis.com/v1/places";
 
 function AddressAutocomplete({
   onAddressSelect,
   placeholder = "Enter your address...",
 }) {
-  const inputRef = useRef(null);
-  const autocompleteRef = useRef(null);
+  const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "";
+  const blurTimeoutRef = useRef(null);
 
-  const { isLoaded, loadError } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "",
-    libraries: libraries,
-  });
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [loadingDetails, setLoadingDetails] = useState(false);
+  const [error, setError] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Initialize autocomplete when script is loaded
   useEffect(() => {
-    console.log(
-      "AddressAutocomplete: isLoaded=",
-      isLoaded,
-      "inputRef=",
-      !!inputRef.current,
-    );
-
-    if (!isLoaded || !inputRef.current) {
+    if (!apiKey) {
+      setError("Google Maps API key is missing.");
       return;
     }
 
-    console.log(
-      "AddressAutocomplete: Initializing Google Places Autocomplete...",
-    );
+    if (query.trim().length < 3) {
+      setSuggestions([]);
+      setLoadingSuggestions(false);
+      return;
+    }
 
-    // Initialize Google Places Autocomplete
-    try {
-      autocompleteRef.current = new window.google.maps.places.Autocomplete(
-        inputRef.current,
-        {
-          types: ["geocode"], // Changed from ['address', 'establishment'] to avoid conflicts
-          componentRestrictions: { country: "ph" }, // Restrict to Philippines
-          fields: [
-            "formatted_address",
-            "geometry",
-            "name",
-            "place_id",
-            "address_components",
-          ],
-        },
-      );
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      try {
+        setLoadingSuggestions(true);
+        setError("");
 
-      console.log("AddressAutocomplete: ✅ Autocomplete created successfully");
+        const response = await fetch(AUTOCOMPLETE_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask":
+              "suggestions.placePrediction.placeId,suggestions.placePrediction.text.text",
+          },
+          body: JSON.stringify({
+            input: query,
+            includedRegionCodes: ["ph"],
+          }),
+        });
 
-      // Add listener for place selection
-      autocompleteRef.current.addListener("place_changed", () => {
-        const place = autocompleteRef.current.getPlace();
-        console.log("AddressAutocomplete: Place selected:", place);
+        const data = await response.json();
 
-        // Validate that the place has geometry (location data)
-        if (!place.geometry || !place.geometry.location) {
-          console.error("AddressAutocomplete: No geometry found");
-          alert(
-            "❌ Invalid Selection\n\nYou must SELECT an address from the dropdown suggestions.\nDo not just type and press Enter.\n\nPlease:\n1. Start typing your address\n2. Wait for suggestions to appear\n3. Click/select one of the suggestions",
-          );
-          // Clear the input
-          if (inputRef.current) {
-            inputRef.current.value = "";
-          }
+        if (cancelled) {
           return;
         }
 
-        // Extract the relevant information
-        const addressData = {
-          address: place.formatted_address || place.name,
-          latitude: place.geometry.location.lat(),
-          longitude: place.geometry.location.lng(),
-          place_id: place.place_id,
-          name: place.name,
-        };
+        if (!response.ok || data.error) {
+          throw new Error(
+            data?.error?.message || "Failed to fetch address suggestions",
+          );
+        }
 
-        console.log("AddressAutocomplete: Sending address data:", addressData);
+        const mappedSuggestions = (data.suggestions || [])
+          .map((item) => item.placePrediction)
+          .filter(Boolean)
+          .map((prediction) => ({
+            placeId: prediction.placeId,
+            label: prediction.text?.text || "",
+          }))
+          .filter((prediction) => prediction.placeId && prediction.label);
 
-        // Call the parent callback with the address data
-        onAddressSelect(addressData);
-      });
-    } catch (error) {
-      console.error("AddressAutocomplete: ❌ Error initializing:", error);
-    }
+        setSuggestions(mappedSuggestions);
+        setShowSuggestions(mappedSuggestions.length > 0);
+      } catch (fetchError) {
+        setSuggestions([]);
+        setShowSuggestions(false);
+        setError(fetchError.message || "Failed to load suggestions");
+      } finally {
+        if (!cancelled) {
+          setLoadingSuggestions(false);
+        }
+      }
+    }, 300);
 
-    // Cleanup
     return () => {
-      if (
-        autocompleteRef.current &&
-        window.google &&
-        window.google.maps.event
-      ) {
-        window.google.maps.event.clearInstanceListeners(
-          autocompleteRef.current,
-        );
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [apiKey, query]);
+
+  useEffect(() => {
+    return () => {
+      if (blurTimeoutRef.current) {
+        clearTimeout(blurTimeoutRef.current);
       }
     };
-  }, [isLoaded, onAddressSelect]);
+  }, []);
 
-  // Handle manual input clearing
-  const handleClear = () => {
-    if (inputRef.current) {
-      inputRef.current.value = "";
+  const handleSelectSuggestion = async (suggestion) => {
+    try {
+      setLoadingDetails(true);
+      setError("");
+
+      const response = await fetch(
+        `${PLACE_DETAILS_ENDPOINT}/${suggestion.placeId}`,
+        {
+          method: "GET",
+          headers: {
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask": "id,displayName,formattedAddress,location",
+          },
+        },
+      );
+
+      const placeData = await response.json();
+
+      if (!response.ok || placeData.error) {
+        throw new Error(
+          placeData?.error?.message || "Failed to fetch selected place details",
+        );
+      }
+
+      if (!placeData.location) {
+        throw new Error("Selected address has no location data.");
+      }
+
+      const selectedAddress =
+        placeData.formattedAddress ||
+        placeData.displayName?.text ||
+        suggestion.label;
+
+      const addressData = {
+        address: selectedAddress,
+        latitude: placeData.location.latitude,
+        longitude: placeData.location.longitude,
+        place_id: placeData.id || suggestion.placeId,
+        name: placeData.displayName?.text || selectedAddress,
+      };
+
+      setQuery(selectedAddress);
+      setShowSuggestions(false);
+      onAddressSelect(addressData);
+    } catch (detailsError) {
+      setError(detailsError.message || "Failed to resolve selected address");
+    } finally {
+      setLoadingDetails(false);
     }
   };
 
-  // Show error message if loading failed
-  if (loadError) {
-    console.error("AddressAutocomplete: Load error:", loadError);
-    return (
-      <div>
-        <input
-          type="text"
-          className="form-input"
-          placeholder={placeholder}
-          disabled
-          style={{
-            width: "100%",
-            padding: "12px",
-            fontSize: "16px",
-            border: "2px solid #ef4444",
-            borderRadius: "8px",
-            backgroundColor: "#fef2f2",
-            cursor: "not-allowed",
-          }}
-        />
-        <p
-          style={{
-            marginTop: "8px",
-            fontSize: "14px",
-            color: "#ef4444",
-          }}
-        >
-          ⚠️ Failed to load Google Maps. Check console for details.
-        </p>
-        <p
-          style={{
-            marginTop: "4px",
-            fontSize: "12px",
-            color: "#6b7280",
-          }}
-        >
-          Error: {loadError.message}
-        </p>
-      </div>
-    );
-  }
+  const handleClear = () => {
+    setQuery("");
+    setSuggestions([]);
+    setShowSuggestions(false);
+    setError("");
+  };
 
-  // Show loading state
-  if (!isLoaded) {
-    return (
-      <div>
-        <input
-          type="text"
-          className="form-input"
-          placeholder="Loading Google Maps..."
-          disabled
-          style={{
-            width: "100%",
-            padding: "12px",
-            fontSize: "16px",
-            border: "2px solid #e5e7eb",
-            borderRadius: "8px",
-            backgroundColor: "#f9fafb",
-            cursor: "wait",
-          }}
-        />
-        <p
-          style={{
-            marginTop: "8px",
-            fontSize: "14px",
-            color: "#6b7280",
-          }}
-        >
-          🔄 Loading address autocomplete...
-        </p>
-      </div>
-    );
-  }
+  const handleBlur = () => {
+    blurTimeoutRef.current = setTimeout(() => {
+      setShowSuggestions(false);
+    }, 180);
+  };
+
+  const handleFocus = () => {
+    if (suggestions.length > 0) {
+      setShowSuggestions(true);
+    }
+  };
 
   return (
     <div style={{ position: "relative", width: "100%" }}>
       <input
-        ref={inputRef}
         type="text"
         className="form-input"
         placeholder={placeholder}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         style={{
           width: "100%",
           padding: "12px 40px 12px 12px",
@@ -199,30 +186,17 @@ function AddressAutocomplete({
           outline: "none",
           transition: "border-color 0.2s",
         }}
-        onFocus={(e) => {
-          e.target.style.borderColor = "#3b82f6";
-        }}
-        onBlur={(e) => {
-          e.target.style.borderColor = "#e5e7eb";
-        }}
-        onKeyDown={(e) => {
-          // Prevent form submission on Enter if no place is selected
-          if (e.key === "Enter") {
-            e.preventDefault();
-            console.log(
-              "AddressAutocomplete: Enter pressed - use dropdown to select!",
-            );
-          }
-        }}
       />
-      {inputRef.current?.value && (
+
+      {query && (
         <button
+          onMouseDown={(e) => e.preventDefault()}
           onClick={handleClear}
           type="button"
           style={{
             position: "absolute",
             right: "8px",
-            top: "50%",
+            top: "19px",
             transform: "translateY(-50%)",
             background: "none",
             border: "none",
@@ -236,6 +210,70 @@ function AddressAutocomplete({
           ×
         </button>
       )}
+
+      {showSuggestions && (
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            right: 0,
+            zIndex: 20,
+            marginTop: "4px",
+            backgroundColor: "#ffffff",
+            border: "1px solid #e5e7eb",
+            borderRadius: "8px",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+            maxHeight: "240px",
+            overflowY: "auto",
+          }}
+        >
+          {loadingSuggestions ? (
+            <div style={{ padding: "10px 12px", color: "#6b7280" }}>
+              Loading suggestions...
+            </div>
+          ) : suggestions.length === 0 ? (
+            <div style={{ padding: "10px 12px", color: "#6b7280" }}>
+              No suggestions found.
+            </div>
+          ) : (
+            suggestions.map((suggestion) => (
+              <button
+                key={suggestion.placeId}
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => handleSelectSuggestion(suggestion)}
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  padding: "10px 12px",
+                  borderBottom: "1px solid #f3f4f6",
+                  color: "#111827",
+                  fontSize: "14px",
+                }}
+              >
+                {suggestion.label}
+              </button>
+            ))
+          )}
+        </div>
+      )}
+
+      {(error || loadingDetails) && (
+        <p
+          style={{
+            marginTop: "8px",
+            fontSize: "13px",
+            color: error ? "#ef4444" : "#6b7280",
+          }}
+        >
+          {loadingDetails ? "Resolving selected address..." : `⚠️ ${error}`}
+        </p>
+      )}
+
       <p
         style={{
           marginTop: "6px",

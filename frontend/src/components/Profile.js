@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProfile, updateProfile } from "../services/api";
+import { updateProfile } from "../services/api";
 
 function Profile({ user, setUser, onLogout }) {
   const [formData, setFormData] = useState({

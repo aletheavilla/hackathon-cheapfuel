@@ -4,7 +4,7 @@ import axios from "axios";
 // In production, use full URL from environment
 const API_URL =
   process.env.NODE_ENV === "production"
-    ? process.env.REACT_APP_API_URL || "http://localhost:8080/api"
+    ? process.env.REACT_APP_API_URL || "/api"
     : "/api";
 
 console.log("Environment:", process.env.NODE_ENV);
@@ -58,8 +58,6 @@ export const updateStationPrice = (stationId, data) =>
   api.post(`/stations/${stationId}/price`, data);
 export const getNavigationUrl = (stationId) =>
   api.get(`/stations/${stationId}/navigate`);
-export const getRecommendation = (data) =>
-  api.post("/stations/recommendation", data);
 export const geocodeAddress = (address) => api.post("/geocode", { address });
 
 // Admin APIs

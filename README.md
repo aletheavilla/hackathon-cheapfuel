@@ -11,7 +11,6 @@ CheapFuel helps drivers instantly find and navigate to the cheapest and nearest 
 - 🗺️ **Google Maps integration** for live traffic routing
 - 👥 **Community pricing** - DOE baseline + user updates
 - 📱 **Mobile-responsive** design
-- 🤖 **AI-powered recommendations** using GPT-4
 
 ## 🚀 Quick Start
 
@@ -35,7 +34,6 @@ CheapFuel helps drivers instantly find and navigate to the cheapest and nearest 
 ```env
 GOOGLE_MAPS_API_KEY=your_key_here
 SECRET_KEY=your-secret-key
-OPENAI_API_KEY=your-openai-key-here  # Optional, for GPT-4 recommendations
 ```
 
 **Frontend** - Create `frontend/.env`:
@@ -65,12 +63,19 @@ npm start
 
 Visit: **http://localhost:3000**
 
+### Test User (Seeded in DB)
+
+Use this seeded record for data testing:
+
+- Name: `Juan Dela Cruz`
+- Email: `test@email.com`
+- Password: `oh-my-g@s-2026`
+
 ## 📚 Documentation
 
 - **[GOOGLE_MAPS_SETUP.md](./GOOGLE_MAPS_SETUP.md)** - Google Maps address autocomplete setup
 - **[CHEAPFUEL_README.md](./CHEAPFUEL_README.md)** - Complete documentation
 - **[QUICKSTART.md](./QUICKSTART.md)** - Quick reference guide
-- **[GPT4_RECOMMENDATION_FEATURE.md](./GPT4_RECOMMENDATION_FEATURE.md)** - AI recommendations guide
 
 ## 🏗️ Tech Stack
 
@@ -144,7 +149,6 @@ Update personal details, car model, and fuel preferences.
 - `POST /api/stations/search` - Search stations
 - `POST /api/stations/:id/price` - Update price
 - `GET /api/stations/:id/navigate` - Get navigation URL
-- `POST /api/stations/recommendation` - Get GPT-4 recommendation
 - `POST /api/geocode` - Geocode and validate address
 
 ### Database Schema

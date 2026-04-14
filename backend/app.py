@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import math
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -10,7 +11,6 @@ import jwt
 from functools import wraps
 from typing import List, Dict, Tuple
 from dotenv import load_dotenv
-from openai import OpenAI
 
 load_dotenv()
 
@@ -25,6 +25,28 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cheapfuel.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
+
+
+def parse_optional_float(value):
+    """Normalize optional numeric input from JSON payloads.
+
+    Returns None for empty values, float for valid numeric values,
+    and raises ValueError for invalid non-empty strings.
+    """
+    if value is None:
+        return None
+
+    if isinstance(value, str):
+        value = value.strip()
+        if value == "":
+            return None
+
+    numeric_value = float(value)
+
+    if not math.isfinite(numeric_value):
+        raise ValueError("Value must be a finite number")
+
+    return numeric_value
 
 
 # Models
@@ -235,6 +257,11 @@ def register():
     if User.query.filter_by(email=data["email"]).first():
         return jsonify({"message": "Email already registered"}), 400
 
+    try:
+        fuel_consumption = parse_optional_float(data.get("fuel_consumption"))
+    except (TypeError, ValueError):
+        return jsonify({"message": "fuel_consumption must be a valid number"}), 400
+
     user = User(
         email=data["email"],
         password_hash=generate_password_hash(data["password"]),
@@ -242,7 +269,7 @@ def register():
         car_make=data.get("car_make"),
         car_model=data.get("car_model"),
         fuel_type=data.get("fuel_type", "Regular"),
-        fuel_consumption=data.get("fuel_consumption"),
+        fuel_consumption=fuel_consumption,
     )
 
     db.session.add(user)
@@ -336,7 +363,15 @@ def update_profile(current_user):
     if data.get("fuel_type"):
         current_user.fuel_type = data["fuel_type"]
     if data.get("fuel_consumption") is not None:
-        current_user.fuel_consumption = data["fuel_consumption"]
+        try:
+            current_user.fuel_consumption = parse_optional_float(
+                data.get("fuel_consumption")
+            )
+        except (TypeError, ValueError):
+            return (
+                jsonify({"message": "fuel_consumption must be a valid number"}),
+                400,
+            )
 
     db.session.commit()
 
@@ -621,88 +656,6 @@ def seed_prices():
     db.session.commit()
 
     return jsonify({"message": "Prices seeded successfully"})
-
-
-@app.route("/api/stations/recommendation", methods=["POST"])
-@token_required
-def get_recommendation(current_user):
-    """Get GPT-4 recommendation for the cheapest gas station"""
-    data = request.get_json()
-
-    stations = data.get("stations", [])
-    fuel_type = data.get("fuel_type", "Regular")
-
-    if not stations:
-        return jsonify({"message": "No stations provided"}), 400
-
-    # Find the cheapest station
-    cheapest_station = min(stations, key=lambda x: x["price"])
-
-    # Initialize OpenAI client
-    openai_api_key = os.getenv("OPENAI_API_KEY") or os.getenv("OPEN_API_KEY")
-
-    if not openai_api_key:
-        # Fallback message without GPT-4
-        return jsonify(
-            {
-                "recommendation": f"🎯 Best Deal: {cheapest_station['name']} offers the cheapest {fuel_type} at ₱{cheapest_station['price']:.2f}/liter, just {cheapest_station['distance_km']} km away!"
-            }
-        )
-
-    try:
-        client = OpenAI(api_key=openai_api_key)
-
-        # Create a prompt for GPT-4
-        prompt = f"""You are a helpful assistant for a gas price comparison app called CheapFuel. 
-Generate a friendly, enthusiastic recommendation message (2-3 sentences max) for the user.
-
-User's preferred fuel type: {fuel_type}
-Cheapest gas station found:
-- Name: {cheapest_station['name']}
-- Price: ₱{cheapest_station['price']:.2f} per liter
-- Distance: {cheapest_station['distance_km']} km away
-- Drive time: {cheapest_station['duration_min']} minutes
-- Address: {cheapest_station['address']}
-
-Write a personalized, engaging recommendation that highlights why this is a great choice. 
-Keep it concise and use emojis sparingly (max 1-2). Focus on the savings and convenience."""
-
-        # Call GPT-4
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a helpful assistant for a gas price app. Be friendly, concise, and enthusiastic.",
-                },
-                {"role": "user", "content": prompt},
-            ],
-            max_tokens=150,
-            temperature=0.7,
-        )
-
-        recommendation = response.choices[0].message.content.strip()
-
-        return jsonify(
-            {
-                "recommendation": recommendation,
-                "cheapest_station": {
-                    "id": cheapest_station["id"],
-                    "name": cheapest_station["name"],
-                    "price": cheapest_station["price"],
-                    "distance_km": cheapest_station["distance_km"],
-                },
-            }
-        )
-
-    except Exception as e:
-        print(f"Error getting GPT-4 recommendation: {e}")
-        # Fallback to basic recommendation
-        return jsonify(
-            {
-                "recommendation": f"🎯 Best Deal: {cheapest_station['name']} offers the cheapest {fuel_type} at ₱{cheapest_station['price']:.2f}/liter, just {cheapest_station['distance_km']} km away!"
-            }
-        )
 
 
 @app.route("/api/geocode", methods=["POST"])

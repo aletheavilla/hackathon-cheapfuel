@@ -50,8 +50,6 @@ GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
 # Flask Secret Key (generate your own)
 SECRET_KEY=your-secret-key-change-in-production
 
-# OpenAI API Key (optional, for GPT-4 recommendations)
-OPENAI_API_KEY=your-openai-key-here
 ENVFILE
 ```
 

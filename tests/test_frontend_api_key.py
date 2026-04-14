@@ -4,16 +4,26 @@ Quick test to check if Google Maps API key works for frontend (Maps JavaScript A
 """
 import requests
 import sys
+import os
+import pytest
 
 API_KEY = os.getenv("REACT_APP_GOOGLE_MAPS_API_KEY")
 
 
-def test_maps_javascript_api():
+@pytest.fixture
+def api_key():
+    key = os.getenv("REACT_APP_GOOGLE_MAPS_API_KEY")
+    if not key:
+        pytest.skip("REACT_APP_GOOGLE_MAPS_API_KEY is not set")
+    return key
+
+
+def check_maps_javascript_api(api_key):
     """Test if Maps JavaScript API is enabled"""
     print("Testing Maps JavaScript API...")
 
     # Try to load the script
-    url = f"https://maps.googleapis.com/maps/api/js?key={API_KEY}&libraries=places"
+    url = f"https://maps.googleapis.com/maps/api/js?key={api_key}&libraries=places"
 
     try:
         response = requests.get(url, timeout=10)
@@ -51,7 +61,7 @@ def test_maps_javascript_api():
         return False
 
 
-def test_places_api():
+def check_places_api(api_key):
     """Test if Places API is enabled"""
     print("\nTesting Places API...")
 
@@ -60,7 +70,7 @@ def test_places_api():
         "location": "14.5995,120.9842",
         "radius": 1000,
         "type": "restaurant",
-        "key": API_KEY,
+        "key": api_key,
     }
 
     try:
@@ -89,6 +99,14 @@ def test_places_api():
         return False
 
 
+def test_maps_javascript_api(api_key):
+    assert check_maps_javascript_api(api_key), "Maps JavaScript API check failed"
+
+
+def test_places_api(api_key):
+    assert check_places_api(api_key), "Places API check failed"
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("Google Maps API Key Test - Frontend")
@@ -97,8 +115,8 @@ if __name__ == "__main__":
     print()
 
     results = []
-    results.append(test_maps_javascript_api())
-    results.append(test_places_api())
+    results.append(check_maps_javascript_api(API_KEY))
+    results.append(check_places_api(API_KEY))
 
     print("\n" + "=" * 60)
     print("SUMMARY")
